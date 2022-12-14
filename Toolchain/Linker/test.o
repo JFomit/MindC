@@ -1,0 +1,122 @@
+﻿{
+  "Header": {
+    "FormatVersion": 0,
+    "CompilerVersion": 0
+  },
+  "FunctionSection": {
+    "DeclaredFunctions": [
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "print_number",
+          "ReturnType": "void",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": "number"
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "fact",
+          "ReturnType": "number",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": "number"
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "main",
+          "ReturnType": "void",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "CodeSection": {
+    "FunctionsCode": [
+      {
+        "Code": [
+          "print_number:",
+          "[store .return]",
+          "[store x]",
+          "print x",
+          "printflush message1",
+          "[return]"
+        ]
+      },
+      {
+        "Code": [
+          "fact:",
+          "[store .return]",
+          "[store n]",
+          "jump .c_fact0 notEqual n 1",
+          "[load 1]",
+          "[return]",
+          ".c_fact0:",
+          "[load n]",
+          "[load .return]",
+          "op sub .c_temp0 n 1",
+          "[load c_temp0]",
+          "[call number.fact(number)]",
+          "[store .c_temp0]",
+          "[store .return]",
+          "[store n]",
+          "op sub .c_temp1 .c_temp0 1",
+          "[load .c_temp1]",
+          "[return]"
+        ]
+      },
+      {
+        "Code": [
+          "[entrypoint]",
+          "main:",
+          "set .c_temp2 5",
+          "[load .c_temp2]",
+          "[call number.fact(number)]",
+          "[store .c_temp1]",
+          "[load .c_temp1]",
+          "[call void.print_number(number)]",
+          "[reset]"
+        ]
+      }
+    ]
+  }
+}
