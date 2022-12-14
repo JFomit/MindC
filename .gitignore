@@ -363,5 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # ANTLR debug extension generated files
-/Toolchain/Compiler/generated
+generated
 .antlr/
