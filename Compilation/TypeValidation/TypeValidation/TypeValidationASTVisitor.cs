@@ -228,5 +228,45 @@ namespace MindC.Compilation.Semantic.TypeValidation
             }
             return PrimitiveDataTypes.Void;
         }
+
+        public override DataType VisitLeftShift(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.LeftShift, b);
+        }
+
+        public override DataType VisitRightShift(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.RightShift, b);
+        }
+
+        public override DataType VisitLessOrEqualComparison(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.LessThanOrEqual, b);
+        }
+
+        public override DataType VisitGreaterOrEqualComparison(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.GreaterThanOrEqual, b);
+        }
+
+        public override DataType VisitEqualComparison(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.Equal, b);
+        }
+
+        public override DataType VisitNotEqualComparison(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.NotEqual, b);
+        }
+
+        public override DataType VisitLogicalAnd(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.LogicalAnd, b);
+        }
+
+        public override DataType VisitLogicalOr(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.LogicalOr, b);
+        }
     }
 }

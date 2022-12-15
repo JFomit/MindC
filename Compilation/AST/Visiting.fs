@@ -45,8 +45,16 @@ module public Visiting =
                     | Div (a, b) as div -> this.VisitDivision(div, a, b)
                     | Add (a, b) as add -> this.VisitAddition(add, a, b)
                     | Sub (a, b) as sub -> this.VisitSubstraction(sub, a, b)
+                    | LeftShift (a, b) as lshift -> this.VisitLeftShift(lshift, a, b)
+                    | RightShift (a, b) as rshift -> this.VisitRightShift(rshift, a, b)
                     | LessThan (a, b) as less -> this.VisitLessComparison(less, a, b)
                     | GreaterThan (a, b) as greater -> this.VisitGreaterComparison(greater, a, b)
+                    | LessThanOrEqual (a, b) as lessOrEqual -> this.VisitLessOrEqualComparison(lessOrEqual, a, b)
+                    | GreaterThanOrEqual (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualComparison(greaterOrEqual, a, b)
+                    | Equal (a, b) as equal -> this.VisitEqualComparison(equal, a, b)
+                    | NotEqual (a, b) as notEqual -> this.VisitNotEqualComparison(notEqual, a, b)
+                    | LogicalAnd (a, b) as ``and`` -> this.VisitLogicalAnd(``and``, a, b)
+                    | LogicalOr (a, b) as ``or`` -> this.VisitLogicalOr(``or``, a, b)
                     // mlog
                     | MlogInstruction parts as instruction -> this.VisitMlogInstruction(instruction, parts)
 
@@ -71,8 +79,18 @@ module public Visiting =
         abstract member VisitDivision : currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitAddition : currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitSubstraction : currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitLeftShift : currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitRightShift : currentNode: Node * a: Node * b: Node -> 'T
+
         abstract member VisitLessComparison: currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitGreaterComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitLessOrEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitGreaterOrEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitNotEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
+
+        abstract member VisitLogicalAnd: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitLogicalOr: currentNode: Node * a: Node * b: Node -> 'T
 
         abstract member VisitMlogInstruction : instruction: Node * parts: List<string> -> 'T
         end
@@ -111,8 +129,16 @@ module public Visiting =
                     | Div (a, b) as div -> this.VisitDivision(div, a, b)
                     | Add (a, b) as add -> this.VisitAddition(add, a, b)
                     | Sub (a, b) as sub -> this.VisitSubstraction(sub, a, b)
+                    | LeftShift (a, b) as lshift -> this.VisitLeftShift(lshift, a, b)
+                    | RightShift (a, b) as rshift -> this.VisitRightShift(rshift, a, b)
                     | LessThan (a, b) as less -> this.VisitLessComparison(less, a, b)
                     | GreaterThan (a, b) as greater -> this.VisitGreaterComparison(greater, a, b)
+                    | LessThanOrEqual (a, b) as lessOrEqual -> this.VisitLessOrEqualComparison(lessOrEqual, a, b)
+                    | GreaterThanOrEqual (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualComparison(greaterOrEqual, a, b)
+                    | Equal (a, b) as equal -> this.VisitEqualComparison(equal, a, b)
+                    | NotEqual (a, b) as notEqual -> this.VisitNotEqualComparison(notEqual, a, b)
+                    | LogicalAnd (a, b) as ``and`` -> this.VisitLogicalAnd(``and``, a, b)
+                    | LogicalOr (a, b) as ``or`` -> this.VisitLogicalOr(``or``, a, b)
                     // mlog
                     | MlogInstruction parts as instruction -> this.VisitMlogInstruction(instruction, parts)
 
@@ -138,8 +164,18 @@ module public Visiting =
         abstract member VisitDivision : currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitAddition : currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitSubstraction : currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitLeftShift : currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitRightShift : currentNode: Node * a: Node * b: Node -> unit
+
         abstract member VisitLessComparison: currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitGreaterComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitLessOrEqualComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitGreaterOrEqualComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitEqualComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitNotEqualComparison: currentNode: Node * a: Node * b: Node -> unit
+
+        abstract member VisitLogicalAnd: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitLogicalOr: currentNode: Node * a: Node * b: Node -> unit
 
         abstract member VisitMlogInstruction : instruction: Node * parts: List<string> -> unit
         end

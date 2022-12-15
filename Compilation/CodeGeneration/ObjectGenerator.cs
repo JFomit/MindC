@@ -296,6 +296,20 @@ namespace MindC.Compilation.CodeGeneration
 
             TempVariableNumber--;
         }
+        private void PutBinaryOp(Node a, Operation operation, Node b)
+        {
+            var tmpRes = CurrentTempVariable;
+            TempVariableNumber++;
+            var tmpA = CurrentTempVariable;
+            Visit(a);
+            TempVariableNumber++;
+            var tmpB = CurrentTempVariable;
+            Visit(b);
+
+            CodeWriter.PutInstruction_Op(operation, tmpRes, tmpA, tmpB);
+
+            TempVariableNumber -= 2;
+        }
         public override void VisitMultiplication(Node currentNode, Node a, Node b)
         {
             var tmpRes = CurrentTempVariable;
@@ -385,6 +399,46 @@ namespace MindC.Compilation.CodeGeneration
                 parts[0],
                 parts.Skip(1)
                 );
+        }
+
+        public override void VisitLeftShift(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.leftShift, b);
+        }
+
+        public override void VisitRightShift(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.rightShift, b);
+        }
+
+        public override void VisitLessOrEqualComparison(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.lessThanOrEqual, b);
+        }
+
+        public override void VisitGreaterOrEqualComparison(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.greaterThanOrEqual, b);
+        }
+
+        public override void VisitEqualComparison(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.equal, b);
+        }
+
+        public override void VisitNotEqualComparison(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.notEqual, b);
+        }
+
+        public override void VisitLogicalAnd(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.logicalAnd, b);
+        }
+
+        public override void VisitLogicalOr(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOp(a, Operation.logicalOr, b);
         }
     }
 }

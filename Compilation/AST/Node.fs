@@ -30,8 +30,16 @@ type public Node =
     | Div of a: Node * b: Node
     | Add of a: Node * b: Node
     | Sub of a: Node * b: Node
+    | LeftShift of a: Node * right: Node
+    | RightShift of a: Node * right: Node
     | LessThan of a: Node * b: Node
     | GreaterThan of a: Node * b: Node
+    | LessThanOrEqual of a: Node * b: Node
+    | GreaterThanOrEqual of a: Node * b: Node
+    | Equal of a: Node * b: Node
+    | NotEqual of a: Node * b: Node
+    | LogicalAnd of a: Node * b: Node
+    | LogicalOr of a: Node * b: Node
     // mlog
     | MlogInstruction of parts: List<string>
 

@@ -249,9 +249,41 @@ namespace MindC.Toolchain.Compiler
             {
                 "<" => Node.NewLessThan(Visit(context.left), Visit(context.right)),
                 ">" => Node.NewGreaterThan(Visit(context.left), Visit(context.right)),
+                "<=" => Node.NewLessThanOrEqual(Visit(context.left), Visit(context.right)),
+                ">=" => Node.NewGreaterThanOrEqual(Visit(context.left), Visit(context.right)),
                 _ => throw new InvalidOperationException("This should not be possible - all operators are handled by ANTLR!")
             };
             return node;
+        }
+        public override Node VisitShifting_operator([NotNull] Shifting_operatorContext context)
+        {
+            var op = context.@operator.Text;
+            var node = op switch
+            {
+                "<<" => Node.NewLeftShift(Visit(context.left), Visit(context.right)),
+                ">>" => Node.NewRightShift(Visit(context.left), Visit(context.right)),
+                _ => throw new InvalidOperationException("This should not be possible - all operators are handled by ANTLR!")
+            };
+            return node;
+        }
+        public override Node VisitEquality_operator([NotNull] Equality_operatorContext context)
+        {
+            var op = context.@operator.Text;
+            var node = op switch
+            {
+                "==" => Node.NewEqual(Visit(context.left), Visit(context.right)),
+                "!=" => Node.NewNotEqual(Visit(context.left), Visit(context.right)),
+                _ => throw new InvalidOperationException("This should not be possible - all operators are handled by ANTLR!")
+            };
+            return node;
+        }
+        public override Node VisitLogical_and_operator([NotNull] Logical_and_operatorContext context)
+        {
+            return Node.NewLogicalAnd(Visit(context.left), Visit(context.right));
+        }
+        public override Node VisitLogical_or_operator([NotNull] Logical_or_operatorContext context)
+        {
+            return Node.NewLogicalOr(Visit(context.left), Visit(context.right));
         }
 
         public override Node VisitExplicit_cast_operator([NotNull] Explicit_cast_operatorContext context)

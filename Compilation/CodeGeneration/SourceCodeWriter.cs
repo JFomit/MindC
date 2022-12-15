@@ -153,6 +153,14 @@ namespace MindC.Compilation.CodeGeneration
         div = 4,
         lessThan = 5,
         greaterThan = 6,
+        lessThanOrEqual = 7,
+        greaterThanOrEqual = 8,
+        leftShift = 9,
+        rightShift = 10,
+        equal = 11,
+        notEqual = 12,
+        logicalAnd = 13,
+        logicalOr = 14
     }
     [EnumExtensions]
     internal enum ConditionType
