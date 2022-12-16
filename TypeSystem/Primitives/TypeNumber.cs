@@ -18,6 +18,10 @@
 
                 (Operation.LessThan, TypeNumber) => PrimitiveDataTypes.Boolean,
                 (Operation.GreaterThan, TypeNumber) => PrimitiveDataTypes.Boolean,
+                (Operation.LessThanOrEqual, TypeNumber) => PrimitiveDataTypes.Boolean,
+                (Operation.GreaterThanOrEqual, TypeNumber) => PrimitiveDataTypes.Boolean,
+                (Operation.Equal, TypeNumber) => PrimitiveDataTypes.Boolean,
+                (Operation.NotEqual, TypeNumber) => PrimitiveDataTypes.Boolean,
 
                 (Operation.ImplicitCast, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.ImplicitCast, TypeString) => PrimitiveDataTypes.String,

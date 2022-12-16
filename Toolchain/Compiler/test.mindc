@@ -3,20 +3,35 @@
 	mlog
 	{
 		print $x;
+	}
+}
+void printflush()
+{
+	mlog
+	{
 		printflush message1;
 	}
 }
-
-number fact(number n)
+number random()
 {
-	if (n < 2)
+	number result;
+	mlog
 	{
-		return 1;
+		op rand $result 1;
 	}
-	return n * fact(n - 1);
+
+	return result;
 }
 
 void main()
 {
-	print_number(fact(5));
+	number x;
+	x = random();
+
+	if (x < 0.5)
+	{
+		print_number(x);
+	}
+	print_number(-1);
+	printflush();
 }

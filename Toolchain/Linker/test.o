@@ -31,12 +31,33 @@
           "Label": null
         },
         "Signature": {
-          "Name": "fact",
+          "Name": "printflush",
+          "ReturnType": "void",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "random",
           "ReturnType": "number",
           "Parameteres": [
             {
               "Type": {
-                "TypeName": "number"
+                "TypeName": ""
               }
             },
             {
@@ -78,29 +99,26 @@
           "[store .return]",
           "[store x]",
           "print x",
+          "[return]"
+        ]
+      },
+      {
+        "Code": [
+          "printflush:",
+          "[store .return]",
           "printflush message1",
           "[return]"
         ]
       },
       {
         "Code": [
-          "fact:",
+          "random:",
           "[store .return]",
-          "[store n]",
-          "jump .c_fact0 notEqual n 1",
-          "[load 1]",
-          "[return]",
-          ".c_fact0:",
-          "[load n]",
-          "[load .return]",
-          "op sub .c_temp0 n 1",
-          "[load c_temp0]",
-          "[call number.fact(number)]",
-          "[store .c_temp0]",
-          "[store .return]",
-          "[store n]",
-          "op sub .c_temp1 .c_temp0 1",
+          "set result 0",
+          "op rand result 1",
+          "set .c_temp1 result",
           "[load .c_temp1]",
+          "[return]",
           "[return]"
         ]
       },
@@ -108,12 +126,26 @@
         "Code": [
           "[entrypoint]",
           "main:",
-          "set .c_temp2 5",
-          "[load .c_temp2]",
-          "[call number.fact(number)]",
+          "set x 0",
+          "[load x]",
+          "[load .return]",
+          "[call number.random()]",
           "[store .c_temp1]",
+          "[store .return]",
+          "[store x]",
+          "set x .c_temp1",
+          "set .c_temp2 x",
+          "set .c_temp3 0.5",
+          "op lessThan .c_temp1 .c_temp2 .c_temp3",
+          "jump .test.mindc0 notEqual .c_temp1 true",
+          "set .c_temp2 x",
+          "[load .c_temp2]",
+          "[call void.print_number(number)]",
+          ".test.mindc0:",
+          "set .c_temp1 -1",
           "[load .c_temp1]",
           "[call void.print_number(number)]",
+          "[call void.printflush()]",
           "[reset]"
         ]
       }
