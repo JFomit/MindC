@@ -6,6 +6,7 @@ using MindC.Compilation.Semantic.Functions;
 using MindC.Compilation.Semantic.Primitives;
 using MindC.Compilation.Semantic.Variables;
 using MindC.Compiler;
+using System.Globalization;
 using static MindC.Compiler.MindCParser;
 
 namespace MindC.Toolchain.Compiler
@@ -227,7 +228,8 @@ namespace MindC.Toolchain.Compiler
         }
         public override Node VisitNumber_literal([NotNull] Number_literalContext context)
         {
-            return Node.NewLiteral(new LiteralValue(PrimitiveDataTypes.Number, int.Parse(context.GetText())));
+            double.TryParse(context.GetText(), NumberStyles.Any, CultureInfo.InvariantCulture, out var value);
+            return Node.NewLiteral(new LiteralValue(PrimitiveDataTypes.Number, value));
         }
         public override Node VisitBoolean_literal([NotNull] Boolean_literalContext context)
         {

@@ -1,4 +1,5 @@
-﻿using MindC.Common.Files.ObjectFiles;
+﻿using Microsoft.FSharp.Core;
+using MindC.Common.Files.ObjectFiles;
 using MindC.Common.Pipelining;
 using MindC.Compilation.AST;
 using MindC.Compilation.Optimization;
@@ -6,6 +7,7 @@ using MindC.Compilation.Semantic;
 using MindC.Compilation.Semantic.Functions;
 using MindC.Compilation.Semantic.Primitives;
 using MindC.Compilation.Semantic.Variables;
+using System.Globalization;
 using static MindC.Compilation.CodeGeneration.SourceCodeWriter;
 
 namespace MindC.Compilation.CodeGeneration
@@ -249,8 +251,9 @@ namespace MindC.Compilation.CodeGeneration
         public override void VisitLiteral(Node currentNode, LiteralValue literal)
         {
             var tmp = CurrentTempVariable;
+            var val = string.Format(CultureInfo.InvariantCulture, "{0}", literal.Value);
 
-            CodeWriter.PutInstruction_Set(tmp, literal.Value.ToString()!);
+            CodeWriter.PutInstruction_Set(tmp, val);
         }
         public override void VisitVariableReference(Node currentNode, VariableDeclaration variable)
         {

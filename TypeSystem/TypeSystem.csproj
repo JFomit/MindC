@@ -10,10 +10,4 @@
     <PackageReference Include="EtaEmre.NetEscapades.EnumGenerators" Version="1.0.0-beta07" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="AST">
-      <HintPath>..\Compilation\AST\bin\Release\net6.0\AST.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
