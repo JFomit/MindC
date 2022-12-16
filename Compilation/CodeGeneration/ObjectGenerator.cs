@@ -312,85 +312,27 @@ namespace MindC.Compilation.CodeGeneration
         }
         public override void VisitMultiplication(Node currentNode, Node a, Node b)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-            var tmpA = CurrentTempVariable;
-            Visit(a);
-            TempVariableNumber++;
-            var tmpB = CurrentTempVariable;
-            Visit(b);
-
-            CodeWriter.PutInstruction_Op(Operation.mul, tmpRes, tmpA, tmpB);
-
-            TempVariableNumber -= 2;
+            PutBinaryOp(a, Operation.mul, b);
         }
         public override void VisitDivision(Node currentNode, Node a, Node b)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-            var tmpA = CurrentTempVariable;
-            Visit(a);
-            TempVariableNumber++;
-            var tmpB = CurrentTempVariable;
-            Visit(b);
-
-            CodeWriter.PutInstruction_Op(Operation.div, tmpRes, tmpA, tmpB);
-
-            TempVariableNumber -= 2;
+            PutBinaryOp(a, Operation.div, b);
         }
         public override void VisitAddition(Node currentNode, Node a, Node b)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-            var tmpA = CurrentTempVariable;
-            Visit(a);
-            TempVariableNumber++;
-            var tmpB = CurrentTempVariable;
-            Visit(b);
-
-            CodeWriter.PutInstruction_Op(Operation.add, tmpRes, tmpA, tmpB);
-
-            TempVariableNumber -= 2;
+            PutBinaryOp(a, Operation.add, b);
         }
         public override void VisitSubstraction(Node currentNode, Node a, Node b)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-            var tmpA = CurrentTempVariable;
-            Visit(a);
-            TempVariableNumber++;
-            var tmpB = CurrentTempVariable;
-            Visit(b);
-
-            CodeWriter.PutInstruction_Op(Operation.sub, tmpRes, tmpA, tmpB);
-
-            TempVariableNumber -= 2;
+            PutBinaryOp(a, Operation.sub, b);
         }
         public override void VisitLessComparison(Node currentNode, Node a, Node b)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-            var tmpA = CurrentTempVariable;
-            Visit(a);
-            TempVariableNumber++;
-            var tmpB = CurrentTempVariable;
-            Visit(b);
-
-            CodeWriter.PutInstruction_Op(Operation.lessThan, tmpRes, tmpA, tmpB);
-            TempVariableNumber -= 2;
+            PutBinaryOp(a, Operation.lessThan, b);
         }
         public override void VisitGreaterComparison(Node currentNode, Node a, Node b)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-            var tmpA = CurrentTempVariable;
-            Visit(a);
-            TempVariableNumber++;
-            var tmpB = CurrentTempVariable;
-            Visit(b);
-
-            CodeWriter.PutInstruction_Op(Operation.greaterThan, tmpRes, tmpA, tmpB);
-            TempVariableNumber -= 2;
+            PutBinaryOp(a, Operation.greaterThan, b);
         }
 
         public override void VisitMlogInstruction(Node instruction, List<string> parts)
@@ -411,22 +353,22 @@ namespace MindC.Compilation.CodeGeneration
             PutBinaryOp(a, Operation.rightShift, b);
         }
 
-        public override void VisitLessOrEqualComparison(Node currentNode, Node a, Node b)
+        public override void VisitLessOrEqualsComparison(Node currentNode, Node a, Node b)
         {
             PutBinaryOp(a, Operation.lessThanOrEqual, b);
         }
 
-        public override void VisitGreaterOrEqualComparison(Node currentNode, Node a, Node b)
+        public override void VisitGreaterOrEqualsComparison(Node currentNode, Node a, Node b)
         {
             PutBinaryOp(a, Operation.greaterThanOrEqual, b);
         }
 
-        public override void VisitEqualComparison(Node currentNode, Node a, Node b)
+        public override void VisitEqualsComparison(Node currentNode, Node a, Node b)
         {
             PutBinaryOp(a, Operation.equal, b);
         }
 
-        public override void VisitNotEqualComparison(Node currentNode, Node a, Node b)
+        public override void VisitNotEqualsComparison(Node currentNode, Node a, Node b)
         {
             PutBinaryOp(a, Operation.notEqual, b);
         }

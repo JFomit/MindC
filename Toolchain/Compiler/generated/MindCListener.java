@@ -278,6 +278,18 @@ public interface MindCListener extends ParseTreeListener {
 	 */
 	void exitUser_defined_type(MindCParser.User_defined_typeContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code bit_or_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBit_or_operator(MindCParser.Bit_or_operatorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code bit_or_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBit_or_operator(MindCParser.Bit_or_operatorContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code variable_reference}
 	 * labeled alternative in {@link MindCParser#primary_expression}.
 	 * @param ctx the parse tree
@@ -374,6 +386,18 @@ public interface MindCListener extends ParseTreeListener {
 	 */
 	void exitLiteral_value(MindCParser.Literal_valueContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code bit_and_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBit_and_operator(MindCParser.Bit_and_operatorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code bit_and_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBit_and_operator(MindCParser.Bit_and_operatorContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code logical_and_operator}
 	 * labeled alternative in {@link MindCParser#primary_expression}.
 	 * @param ctx the parse tree
@@ -421,6 +445,18 @@ public interface MindCListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMultiplicationing_operator(MindCParser.Multiplicationing_operatorContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code bit_xor_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBit_xor_operator(MindCParser.Bit_xor_operatorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code bit_xor_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBit_xor_operator(MindCParser.Bit_xor_operatorContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code explicit_cast_operator}
 	 * labeled alternative in {@link MindCParser#primary_expression}.

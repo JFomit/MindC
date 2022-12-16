@@ -173,6 +173,13 @@ public interface MindCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUser_defined_type(MindCParser.User_defined_typeContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code bit_or_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBit_or_operator(MindCParser.Bit_or_operatorContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code variable_reference}
 	 * labeled alternative in {@link MindCParser#primary_expression}.
 	 * @param ctx the parse tree
@@ -229,6 +236,13 @@ public interface MindCVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLiteral_value(MindCParser.Literal_valueContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code bit_and_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBit_and_operator(MindCParser.Bit_and_operatorContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code logical_and_operator}
 	 * labeled alternative in {@link MindCParser#primary_expression}.
 	 * @param ctx the parse tree
@@ -256,6 +270,13 @@ public interface MindCVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMultiplicationing_operator(MindCParser.Multiplicationing_operatorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code bit_xor_operator}
+	 * labeled alternative in {@link MindCParser#primary_expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBit_xor_operator(MindCParser.Bit_xor_operatorContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code explicit_cast_operator}
 	 * labeled alternative in {@link MindCParser#primary_expression}.

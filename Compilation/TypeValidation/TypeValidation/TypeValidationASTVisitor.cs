@@ -239,22 +239,22 @@ namespace MindC.Compilation.Semantic.TypeValidation
             return EvaluateBinaryOperationType(a, Operation.RightShift, b);
         }
 
-        public override DataType VisitLessOrEqualComparison(Node currentNode, Node a, Node b)
+        public override DataType VisitLessOrEqualsComparison(Node currentNode, Node a, Node b)
         {
             return EvaluateBinaryOperationType(a, Operation.LessThanOrEqual, b);
         }
 
-        public override DataType VisitGreaterOrEqualComparison(Node currentNode, Node a, Node b)
+        public override DataType VisitGreaterOrEqualsComparison(Node currentNode, Node a, Node b)
         {
             return EvaluateBinaryOperationType(a, Operation.GreaterThanOrEqual, b);
         }
 
-        public override DataType VisitEqualComparison(Node currentNode, Node a, Node b)
+        public override DataType VisitEqualsComparison(Node currentNode, Node a, Node b)
         {
             return EvaluateBinaryOperationType(a, Operation.Equal, b);
         }
 
-        public override DataType VisitNotEqualComparison(Node currentNode, Node a, Node b)
+        public override DataType VisitNotEqualsComparison(Node currentNode, Node a, Node b)
         {
             return EvaluateBinaryOperationType(a, Operation.NotEqual, b);
         }

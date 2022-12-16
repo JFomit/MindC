@@ -34,10 +34,10 @@ type public Node =
     | RightShift of a: Node * right: Node
     | LessThan of a: Node * b: Node
     | GreaterThan of a: Node * b: Node
-    | LessThanOrEqual of a: Node * b: Node
-    | GreaterThanOrEqual of a: Node * b: Node
-    | Equal of a: Node * b: Node
-    | NotEqual of a: Node * b: Node
+    | LessThanOrEquals of a: Node * b: Node
+    | GreaterThanOrEquals of a: Node * b: Node
+    | Equals of a: Node * b: Node
+    | NotEquals of a: Node * b: Node
     | LogicalAnd of a: Node * b: Node
     | LogicalOr of a: Node * b: Node
     // mlog

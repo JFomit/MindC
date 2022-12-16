@@ -49,10 +49,10 @@ module public Visiting =
                     | RightShift (a, b) as rshift -> this.VisitRightShift(rshift, a, b)
                     | LessThan (a, b) as less -> this.VisitLessComparison(less, a, b)
                     | GreaterThan (a, b) as greater -> this.VisitGreaterComparison(greater, a, b)
-                    | LessThanOrEqual (a, b) as lessOrEqual -> this.VisitLessOrEqualComparison(lessOrEqual, a, b)
-                    | GreaterThanOrEqual (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualComparison(greaterOrEqual, a, b)
-                    | Equal (a, b) as equal -> this.VisitEqualComparison(equal, a, b)
-                    | NotEqual (a, b) as notEqual -> this.VisitNotEqualComparison(notEqual, a, b)
+                    | LessThanOrEquals (a, b) as lessOrEqual -> this.VisitLessOrEqualsComparison(lessOrEqual, a, b)
+                    | GreaterThanOrEquals (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualsComparison(greaterOrEqual, a, b)
+                    | Equals (a, b) as equal -> this.VisitEqualsComparison(equal, a, b)
+                    | NotEquals (a, b) as notEqual -> this.VisitNotEqualsComparison(notEqual, a, b)
                     | LogicalAnd (a, b) as ``and`` -> this.VisitLogicalAnd(``and``, a, b)
                     | LogicalOr (a, b) as ``or`` -> this.VisitLogicalOr(``or``, a, b)
                     // mlog
@@ -84,10 +84,10 @@ module public Visiting =
 
         abstract member VisitLessComparison: currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitGreaterComparison: currentNode: Node * a: Node * b: Node -> 'T
-        abstract member VisitLessOrEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
-        abstract member VisitGreaterOrEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
-        abstract member VisitEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
-        abstract member VisitNotEqualComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitLessOrEqualsComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitGreaterOrEqualsComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitEqualsComparison: currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitNotEqualsComparison: currentNode: Node * a: Node * b: Node -> 'T
 
         abstract member VisitLogicalAnd: currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitLogicalOr: currentNode: Node * a: Node * b: Node -> 'T
@@ -133,10 +133,10 @@ module public Visiting =
                     | RightShift (a, b) as rshift -> this.VisitRightShift(rshift, a, b)
                     | LessThan (a, b) as less -> this.VisitLessComparison(less, a, b)
                     | GreaterThan (a, b) as greater -> this.VisitGreaterComparison(greater, a, b)
-                    | LessThanOrEqual (a, b) as lessOrEqual -> this.VisitLessOrEqualComparison(lessOrEqual, a, b)
-                    | GreaterThanOrEqual (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualComparison(greaterOrEqual, a, b)
-                    | Equal (a, b) as equal -> this.VisitEqualComparison(equal, a, b)
-                    | NotEqual (a, b) as notEqual -> this.VisitNotEqualComparison(notEqual, a, b)
+                    | LessThanOrEquals (a, b) as lessOrEqual -> this.VisitLessOrEqualsComparison(lessOrEqual, a, b)
+                    | GreaterThanOrEquals (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualsComparison(greaterOrEqual, a, b)
+                    | Equals (a, b) as equal -> this.VisitEqualsComparison(equal, a, b)
+                    | NotEquals (a, b) as notEqual -> this.VisitNotEqualsComparison(notEqual, a, b)
                     | LogicalAnd (a, b) as ``and`` -> this.VisitLogicalAnd(``and``, a, b)
                     | LogicalOr (a, b) as ``or`` -> this.VisitLogicalOr(``or``, a, b)
                     // mlog
@@ -169,10 +169,10 @@ module public Visiting =
 
         abstract member VisitLessComparison: currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitGreaterComparison: currentNode: Node * a: Node * b: Node -> unit
-        abstract member VisitLessOrEqualComparison: currentNode: Node * a: Node * b: Node -> unit
-        abstract member VisitGreaterOrEqualComparison: currentNode: Node * a: Node * b: Node -> unit
-        abstract member VisitEqualComparison: currentNode: Node * a: Node * b: Node -> unit
-        abstract member VisitNotEqualComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitLessOrEqualsComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitGreaterOrEqualsComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitEqualsComparison: currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitNotEqualsComparison: currentNode: Node * a: Node * b: Node -> unit
 
         abstract member VisitLogicalAnd: currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitLogicalOr: currentNode: Node * a: Node * b: Node -> unit

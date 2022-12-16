@@ -173,6 +173,7 @@ primary_expression
 	: literal                                                                             #literal_value
 	| identifier                                                                          #variable_reference
     | '(' primary_expression ')'                                                          #parentheses
+    //| identifier '::' identifier                                                          #namespace_separator
     // Operators
 	| function_call_operator                                                              #function_call
     | instance=primary_expression '.' strcut_member_access                                #member_access_operator
@@ -182,6 +183,9 @@ primary_expression
     | left=primary_expression operator=('<<' | '>>') right=primary_expression             #shifting_operator
     | left=primary_expression operator=('<' | '>' | '<=' | '>=') right=primary_expression #comparison_operator
     | left=primary_expression operator=('==' | '!=') right=primary_expression             #equality_operator
+    | left=primary_expression operator='&' right=primary_expression                       #bit_and_operator
+    | left=primary_expression operator='^' right=primary_expression                       #bit_xor_operator
+    | left=primary_expression operator='|' right=primary_expression                       #bit_or_operator
     | left=primary_expression '&&' right=primary_expression                               #logical_and_operator
     | left=primary_expression '||' right=primary_expression                               #logical_or_operator
 	;

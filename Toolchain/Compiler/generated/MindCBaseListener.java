@@ -340,6 +340,18 @@ public class MindCBaseListener implements MindCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBit_or_operator(MindCParser.Bit_or_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBit_or_operator(MindCParser.Bit_or_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariable_reference(MindCParser.Variable_referenceContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -436,6 +448,18 @@ public class MindCBaseListener implements MindCListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBit_and_operator(MindCParser.Bit_and_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBit_and_operator(MindCParser.Bit_and_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLogical_and_operator(MindCParser.Logical_and_operatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -479,6 +503,18 @@ public class MindCBaseListener implements MindCListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMultiplicationing_operator(MindCParser.Multiplicationing_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBit_xor_operator(MindCParser.Bit_xor_operatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBit_xor_operator(MindCParser.Bit_xor_operatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

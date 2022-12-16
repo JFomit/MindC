@@ -249,8 +249,8 @@ namespace MindC.Toolchain.Compiler
             {
                 "<" => Node.NewLessThan(Visit(context.left), Visit(context.right)),
                 ">" => Node.NewGreaterThan(Visit(context.left), Visit(context.right)),
-                "<=" => Node.NewLessThanOrEqual(Visit(context.left), Visit(context.right)),
-                ">=" => Node.NewGreaterThanOrEqual(Visit(context.left), Visit(context.right)),
+                "<=" => Node.NewLessThanOrEquals(Visit(context.left), Visit(context.right)),
+                ">=" => Node.NewGreaterThanOrEquals(Visit(context.left), Visit(context.right)),
                 _ => throw new InvalidOperationException("This should not be possible - all operators are handled by ANTLR!")
             };
             return node;
@@ -271,8 +271,8 @@ namespace MindC.Toolchain.Compiler
             var op = context.@operator.Text;
             var node = op switch
             {
-                "==" => Node.NewEqual(Visit(context.left), Visit(context.right)),
-                "!=" => Node.NewNotEqual(Visit(context.left), Visit(context.right)),
+                "==" => Node.NewEquals(Visit(context.left), Visit(context.right)),
+                "!=" => Node.NewNotEquals(Visit(context.left), Visit(context.right)),
                 _ => throw new InvalidOperationException("This should not be possible - all operators are handled by ANTLR!")
             };
             return node;
