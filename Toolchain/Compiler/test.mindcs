@@ -1,0 +1,6 @@
+﻿#include "test.mindch"
+
+void main() {
+	number n;
+	n = sin(10);
+}

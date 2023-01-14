@@ -15,9 +15,11 @@
                 (Operation.GreaterThan, TypeBoolean) => PrimitiveDataTypes.Boolean,
                 (Operation.LessThanOrEqual, TypeBoolean) => PrimitiveDataTypes.Boolean,
                 (Operation.GreaterThanOrEqual, TypeBoolean) => PrimitiveDataTypes.Boolean,
-                (Operation.Equal, TypeBoolean) => PrimitiveDataTypes.Boolean,
-                (Operation.NotEqual, TypeBoolean) => PrimitiveDataTypes.Boolean,
+                (Operation.Equals, TypeBoolean) => PrimitiveDataTypes.Boolean,
+                (Operation.NotEquals, TypeBoolean) => PrimitiveDataTypes.Boolean,
+
                 (Operation.LogicalAnd, TypeBoolean) => PrimitiveDataTypes.Boolean,
+                (Operation.Xor, TypeBoolean) => PrimitiveDataTypes.Boolean,
                 (Operation.LogicalOr, TypeBoolean) => PrimitiveDataTypes.Boolean,
 
                 (Operation.ImplicitCast, TypeBoolean) => PrimitiveDataTypes.Boolean,

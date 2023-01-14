@@ -40,21 +40,31 @@ module public Visiting =
                     | Literal value as literal -> this.VisitLiteral(literal, value)
                     | VariableReference var as varRef -> this.VisitVariableReference(varRef, var)
                     | FunctionCall (func, args) as functionCall -> this.VisitFunctionCall(functionCall, func, args)
+
                     | Cast (targetType, instance) as cast -> this.VisitCast(cast, targetType, instance)
+
                     | Mul (a, b) as mul -> this.VisitMultiplication(mul, a, b)
                     | Div (a, b) as div -> this.VisitDivision(div, a, b)
+                    | Mod (a, b) as ``mod`` -> this.VisitModulous(``mod``, a, b)
                     | Add (a, b) as add -> this.VisitAddition(add, a, b)
                     | Sub (a, b) as sub -> this.VisitSubstraction(sub, a, b)
+
                     | LeftShift (a, b) as lshift -> this.VisitLeftShift(lshift, a, b)
                     | RightShift (a, b) as rshift -> this.VisitRightShift(rshift, a, b)
+
+                    | BitwiseAnd (a, b) as bitAnd -> this.VisitBitwiseAnd(bitAnd, a, b)
+                    | BitwiseXor (a, b) as bitXor -> this.VisitBitwiseXor(bitXor, a, b)
+                    | BitwiseOr (a, b) as bitOr -> this.VisitBitwiseOr(bitOr, a, b)
+
                     | LessThan (a, b) as less -> this.VisitLessComparison(less, a, b)
                     | GreaterThan (a, b) as greater -> this.VisitGreaterComparison(greater, a, b)
                     | LessThanOrEquals (a, b) as lessOrEqual -> this.VisitLessOrEqualsComparison(lessOrEqual, a, b)
                     | GreaterThanOrEquals (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualsComparison(greaterOrEqual, a, b)
                     | Equals (a, b) as equal -> this.VisitEqualsComparison(equal, a, b)
                     | NotEquals (a, b) as notEqual -> this.VisitNotEqualsComparison(notEqual, a, b)
-                    | LogicalAnd (a, b) as ``and`` -> this.VisitLogicalAnd(``and``, a, b)
-                    | LogicalOr (a, b) as ``or`` -> this.VisitLogicalOr(``or``, a, b)
+
+                    | LogicalAnd (a, b) as logicAnd -> this.VisitLogicalAnd(logicAnd, a, b)
+                    | LogicalOr (a, b) as logicOr -> this.VisitLogicalOr(logicOr, a, b)
                     // mlog
                     | MlogInstruction parts as instruction -> this.VisitMlogInstruction(instruction, parts)
 
@@ -74,13 +84,21 @@ module public Visiting =
         abstract member VisitLiteral : currentNode: Node * literal: LiteralValue -> 'T
         abstract member VisitVariableReference : currentNode: Node * variable: VariableDeclaration -> 'T
         abstract member VisitFunctionCall : currentNode: Node * ``function``: FunctionDeclaration * arguments: List<Node> -> 'T
+
         abstract member VisitCast : currentNode: Node * targetType: DataType * instatnce: Node -> 'T
+
         abstract member VisitMultiplication : currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitDivision : currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitModulous : currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitAddition : currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitSubstraction : currentNode: Node * a: Node * b: Node -> 'T
+
         abstract member VisitLeftShift : currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitRightShift : currentNode: Node * a: Node * b: Node -> 'T
+
+        abstract member VisitBitwiseAnd : currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitBitwiseXor : currentNode: Node * a: Node * b: Node -> 'T
+        abstract member VisitBitwiseOr : currentNode: Node * a: Node * b: Node -> 'T
 
         abstract member VisitLessComparison: currentNode: Node * a: Node * b: Node -> 'T
         abstract member VisitGreaterComparison: currentNode: Node * a: Node * b: Node -> 'T
@@ -124,19 +142,29 @@ module public Visiting =
                     | Literal value as literal -> this.VisitLiteral(literal, value)
                     | VariableReference var as varRef -> this.VisitVariableReference(varRef, var)
                     | FunctionCall (func, args) as functionCall -> this.VisitFunctionCall(functionCall, func, args)
+
                     | Cast (targetType, instance) as cast -> this.VisitCast(cast, targetType, instance)
+
                     | Mul (a, b) as mul -> this.VisitMultiplication(mul, a, b)
                     | Div (a, b) as div -> this.VisitDivision(div, a, b)
+                    | Mod (a, b) as ``mod`` -> this.VisitModulous(``mod``, a, b)
                     | Add (a, b) as add -> this.VisitAddition(add, a, b)
                     | Sub (a, b) as sub -> this.VisitSubstraction(sub, a, b)
+
                     | LeftShift (a, b) as lshift -> this.VisitLeftShift(lshift, a, b)
                     | RightShift (a, b) as rshift -> this.VisitRightShift(rshift, a, b)
+
+                    | BitwiseAnd (a, b) as bitAnd -> this.VisitBitwiseAnd(bitAnd, a, b)
+                    | BitwiseXor (a, b) as bitXor -> this.VisitBitwiseXor(bitXor, a, b)
+                    | BitwiseOr (a, b) as bitOr -> this.VisitBitwiseOr(bitOr, a, b)
+
                     | LessThan (a, b) as less -> this.VisitLessComparison(less, a, b)
                     | GreaterThan (a, b) as greater -> this.VisitGreaterComparison(greater, a, b)
                     | LessThanOrEquals (a, b) as lessOrEqual -> this.VisitLessOrEqualsComparison(lessOrEqual, a, b)
                     | GreaterThanOrEquals (a, b) as greaterOrEqual -> this.VisitGreaterOrEqualsComparison(greaterOrEqual, a, b)
                     | Equals (a, b) as equal -> this.VisitEqualsComparison(equal, a, b)
                     | NotEquals (a, b) as notEqual -> this.VisitNotEqualsComparison(notEqual, a, b)
+
                     | LogicalAnd (a, b) as ``and`` -> this.VisitLogicalAnd(``and``, a, b)
                     | LogicalOr (a, b) as ``or`` -> this.VisitLogicalOr(``or``, a, b)
                     // mlog
@@ -159,13 +187,21 @@ module public Visiting =
         abstract member VisitLiteral : currentNode: Node * literal: LiteralValue -> unit
         abstract member VisitVariableReference : currentNode: Node * variable: VariableDeclaration -> unit
         abstract member VisitFunctionCall : currentNode: Node * ``function``: FunctionDeclaration * arguments: List<Node> -> unit
+
         abstract member VisitCast : currentNode: Node * targetType: DataType * instatnce: Node -> unit
+
         abstract member VisitMultiplication : currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitDivision : currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitModulous : currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitAddition : currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitSubstraction : currentNode: Node * a: Node * b: Node -> unit
+
         abstract member VisitLeftShift : currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitRightShift : currentNode: Node * a: Node * b: Node -> unit
+
+        abstract member VisitBitwiseAnd : currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitBitwiseXor : currentNode: Node * a: Node * b: Node -> unit
+        abstract member VisitBitwiseOr : currentNode: Node * a: Node * b: Node -> unit
 
         abstract member VisitLessComparison: currentNode: Node * a: Node * b: Node -> unit
         abstract member VisitGreaterComparison: currentNode: Node * a: Node * b: Node -> unit

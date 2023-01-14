@@ -15,13 +15,18 @@
                 (Operation.Sub, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.Mul, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.Div, TypeNumber) => PrimitiveDataTypes.Number,
+                (Operation.Mod, TypeNumber) => PrimitiveDataTypes.Number,
 
                 (Operation.LessThan, TypeNumber) => PrimitiveDataTypes.Boolean,
                 (Operation.GreaterThan, TypeNumber) => PrimitiveDataTypes.Boolean,
                 (Operation.LessThanOrEqual, TypeNumber) => PrimitiveDataTypes.Boolean,
                 (Operation.GreaterThanOrEqual, TypeNumber) => PrimitiveDataTypes.Boolean,
-                (Operation.Equal, TypeNumber) => PrimitiveDataTypes.Boolean,
-                (Operation.NotEqual, TypeNumber) => PrimitiveDataTypes.Boolean,
+                (Operation.Equals, TypeNumber) => PrimitiveDataTypes.Boolean,
+                (Operation.NotEquals, TypeNumber) => PrimitiveDataTypes.Boolean,
+
+                (Operation.And, TypeNumber) => PrimitiveDataTypes.Number,
+                (Operation.Xor, TypeNumber) => PrimitiveDataTypes.Number,
+                (Operation.Or, TypeNumber) => PrimitiveDataTypes.Number,
 
                 (Operation.ImplicitCast, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.ImplicitCast, TypeString) => PrimitiveDataTypes.String,

@@ -1,0 +1,12 @@
+﻿#ifndef __MATH__
+#define __MATH__
+
+number sin(number val) {
+    number result;
+    mlog {
+        op sin $result $val ;
+    }
+
+    return result
+}
+#endif

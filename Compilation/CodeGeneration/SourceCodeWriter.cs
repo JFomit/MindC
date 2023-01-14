@@ -76,6 +76,14 @@ namespace MindC.Compilation.CodeGeneration
         {
             _code.Add($"[pop]");
         }
+        internal void PutMacroCode_Invoke(string functionName)
+        {
+            _code.Add($"[invoke {functionName}]");
+        }
+        internal void PutMacroCode_MacroArg(string arg)
+        {
+            _code.Add($"[macroArg {arg}]");
+        }
         // instructions
         internal void PutInstruction(string instruction, IEnumerable<string> args)
         {
@@ -147,20 +155,28 @@ namespace MindC.Compilation.CodeGeneration
     internal enum Operation
     {
         invalid = 0,
-        add = 1,
-        sub = 2,
-        mul = 3,
-        div = 4,
-        lessThan = 5,
-        greaterThan = 6,
-        lessThanOrEqual = 7,
-        greaterThanOrEqual = 8,
-        leftShift = 9,
-        rightShift = 10,
-        equal = 11,
-        notEqual = 12,
-        logicalAnd = 13,
-        logicalOr = 14
+        add,
+        sub,
+        mul,
+        div,
+        mod,
+
+        leftShift,
+        rightShift,
+
+        lessThan,
+        greaterThan,
+        lessThanOrEqual,
+        greaterThanOrEqual,
+        equals,
+        notEquals,
+
+        and,
+        xor,
+        or,
+
+        logicalAnd,
+        logicalOr,
     }
     [EnumExtensions]
     internal enum ConditionType

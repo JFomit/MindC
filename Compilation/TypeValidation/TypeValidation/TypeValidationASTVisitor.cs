@@ -251,12 +251,12 @@ namespace MindC.Compilation.Semantic.TypeValidation
 
         public override DataType VisitEqualsComparison(Node currentNode, Node a, Node b)
         {
-            return EvaluateBinaryOperationType(a, Operation.Equal, b);
+            return EvaluateBinaryOperationType(a, Operation.Equals, b);
         }
 
         public override DataType VisitNotEqualsComparison(Node currentNode, Node a, Node b)
         {
-            return EvaluateBinaryOperationType(a, Operation.NotEqual, b);
+            return EvaluateBinaryOperationType(a, Operation.NotEquals, b);
         }
 
         public override DataType VisitLogicalAnd(Node currentNode, Node a, Node b)
@@ -267,6 +267,26 @@ namespace MindC.Compilation.Semantic.TypeValidation
         public override DataType VisitLogicalOr(Node currentNode, Node a, Node b)
         {
             return EvaluateBinaryOperationType(a, Operation.LogicalOr, b);
+        }
+
+        public override DataType VisitModulous(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.Mod, b);
+        }
+
+        public override DataType VisitBitwiseAnd(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.And, b);
+        }
+
+        public override DataType VisitBitwiseXor(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.Xor, b);
+        }
+
+        public override DataType VisitBitwiseOr(Node currentNode, Node a, Node b)
+        {
+            return EvaluateBinaryOperationType(a, Operation.Or, b);
         }
     }
 }

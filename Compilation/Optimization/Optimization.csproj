@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Utility\Utility\Utility.csproj" />
+    <ProjectReference Include="..\AST\AST.fsproj" />
     <ProjectReference Include="..\Semantic\Semantic.csproj" />
   </ItemGroup>
 

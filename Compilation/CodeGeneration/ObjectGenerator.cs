@@ -8,6 +8,7 @@ using MindC.Compilation.Semantic.Functions;
 using MindC.Compilation.Semantic.Primitives;
 using MindC.Compilation.Semantic.Variables;
 using System.Globalization;
+using System.Reflection.Metadata;
 using static MindC.Compilation.CodeGeneration.SourceCodeWriter;
 
 namespace MindC.Compilation.CodeGeneration
@@ -22,6 +23,8 @@ namespace MindC.Compilation.CodeGeneration
         private List<IOptimizer> EnabledOptimizers { get; init; }
         private SourceCodeWriter CodeWriter { get; init; }
         private ObjectFileWriter FileWriter { get; init; }
+
+        private Dictionary<string, string[]> Macros { get; init; }
 
         private int TempVariableNumber = 0;
         private int BrunchNumber = 0;
@@ -39,6 +42,8 @@ namespace MindC.Compilation.CodeGeneration
 
             CodeWriter = new();
             FileWriter = new();
+
+            Macros = new();
 
             StageStatus = StageStatus.Ready;
 
@@ -113,13 +118,19 @@ namespace MindC.Compilation.CodeGeneration
             }
             else
             {
-                CodeWriter.PutLabel(function.Name);
-                PutFunctionArgumentsCode(function); // not main function
+                CodeWriter.PutLabel(function.Name); // not main function
+                PutFunctionArgumentsCode(function);
                 PutFunctionCode(function, body);
                 CodeWriter.PutMacroCode_Return();
             }
 
-            FileWriter.PutCode(CodeWriter.End());
+            var functionCode = CodeWriter.End();
+            //if (function.IsMacro)
+            //{
+            //    Macros.Add(function.Name, functionCode); // if its a macro, storing it for substitutions
+            //}
+
+            FileWriter.PutCode(functionCode);
             CurrentFunction = null!;
         }
         private void PutFunctionArgumentsCode(FunctionDeclaration function)
@@ -164,6 +175,45 @@ namespace MindC.Compilation.CodeGeneration
         public override void VisitFunctionCallStatement(Node currentNode, FunctionDeclaration function, List<Node> parameteres)
         {
             TempVariableNumber += 1;
+            //if (function.IsMacro)
+            //{
+            //    var macroCode = Macros[function.Name];
+
+            //    PutMacroCallStatement(function, parameteres, macroCode);
+            //}
+            //else
+            //{
+            //}
+            PutFunctionCallStatement(function, parameteres);
+            
+            TempVariableNumber -= 1;
+        }
+        private void PutMacroCallStatement(FunctionDeclaration macro, List<Node> parameteres, string[] code)
+        {
+            var codeOffset = 2; // skipping label and [store .return]
+            for (int i = 0; i < parameteres.Count; i++)
+            {
+                Node param = parameteres[i];
+                Visit(param);
+                CodeWriter.PutInstruction_Set(macro.Parameteres[i].Name, CurrentTempVariable);
+                codeOffset++;
+            }
+            var endBrunch = CurrentBrunchName;
+            BrunchNumber++;
+            for (; codeOffset < code.Length; codeOffset++)
+            {
+                var currentLine = code[codeOffset];
+                if (currentLine.StartsWith("[return]"))
+                {
+                    CodeWriter.PutInstruction_Jump(endBrunch, ConditionType.always);
+                    continue;
+                }
+                CodeWriter.PutLine(code[codeOffset]);
+            }
+            CodeWriter.PutLabel(endBrunch);
+        }
+        private void PutFunctionCallStatement(FunctionDeclaration function, List<Node> parameteres)
+        {
             // saving arguments and local variables
             // TODO: make use of function signatures in the semantic model
             //foreach (var thisFuncArgument in CurrentFunction.Parameteres)
@@ -201,7 +251,6 @@ namespace MindC.Compilation.CodeGeneration
             //{
             //    CodeWriter.PutMacroCode_Store(thisFuncArgument.Name);
             //}
-            TempVariableNumber -= 1;
         }
         public override void VisitIfStatement(Node currentNode, Node condition, Node body)
         {
@@ -265,6 +314,20 @@ namespace MindC.Compilation.CodeGeneration
         {
             var tmpRes = CurrentTempVariable;
             TempVariableNumber++;
+
+            //if (function.IsMacro)
+            //{
+            //    var code = Macros[function.Name];
+            //    PutMacroCall(tmpRes, function, parameteres, code);
+            //}
+            //else
+            //{
+            //}
+            PutFunctionCall(tmpRes, function, parameteres);
+            
+        }
+        private void PutFunctionCall(string tmpRes, FunctionDeclaration function, List<Node> parameteres)
+        {
             // TODO: make use of function signatures in the semantic model
             // saving arguments and local variables
             foreach (var thisFuncLocalVar in SemanticModel.GetFunctionLocalVariables(CurrentFunction.Name))
@@ -288,6 +351,36 @@ namespace MindC.Compilation.CodeGeneration
                 CodeWriter.PutMacroCode_Store(thisFuncLocalVar.Name);
             }
         }
+        private void PutMacroCall(string tmpRes, FunctionDeclaration macro, List<Node> parameteres, string[] code)
+        {
+            // TODO: all local variables are f*ked!
+            var codeOffset = 2; // skipping label and [store .return]
+            for (int i = 0; i < parameteres.Count; i++)
+            {
+                Node param = parameteres[i];
+                Visit(param);
+                CodeWriter.PutInstruction_Set(macro.Parameteres[i].Name, CurrentTempVariable);
+                codeOffset++;
+            }
+            var endBrunch = CurrentBrunchName;
+            BrunchNumber++;
+            for (; codeOffset < code.Length; codeOffset++)
+            {
+                var currentLine = code[codeOffset];
+                if (currentLine.StartsWith("[load"))
+                {
+                    var lookAhead = code[codeOffset + 1];
+                    if (lookAhead == "[return]")
+                    {
+                        CodeWriter.PutInstruction_Set(tmpRes, currentLine.Trim('[', ']').Split()[1]);
+                        CodeWriter.PutInstruction_Jump(endBrunch, ConditionType.always);
+                        continue;
+                    }
+                }
+                CodeWriter.PutLine(code[codeOffset]);
+            }
+            CodeWriter.PutLabel(endBrunch);
+        }
         public override void VisitCast(Node currentNode, DataType targetType, Node instatnce)
         {
             var tmpRes = CurrentTempVariable;
@@ -299,7 +392,7 @@ namespace MindC.Compilation.CodeGeneration
 
             TempVariableNumber--;
         }
-        private void PutBinaryOp(Node a, Operation operation, Node b)
+        private void PutBinaryOperation(Node a, Operation operation, Node b)
         {
             var tmpRes = CurrentTempVariable;
             TempVariableNumber++;
@@ -315,27 +408,27 @@ namespace MindC.Compilation.CodeGeneration
         }
         public override void VisitMultiplication(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.mul, b);
+            PutBinaryOperation(a, Operation.mul, b);
         }
         public override void VisitDivision(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.div, b);
+            PutBinaryOperation(a, Operation.div, b);
         }
         public override void VisitAddition(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.add, b);
+            PutBinaryOperation(a, Operation.add, b);
         }
         public override void VisitSubstraction(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.sub, b);
+            PutBinaryOperation(a, Operation.sub, b);
         }
         public override void VisitLessComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.lessThan, b);
+            PutBinaryOperation(a, Operation.lessThan, b);
         }
         public override void VisitGreaterComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.greaterThan, b);
+            PutBinaryOperation(a, Operation.greaterThan, b);
         }
 
         public override void VisitMlogInstruction(Node instruction, List<string> parts)
@@ -348,42 +441,52 @@ namespace MindC.Compilation.CodeGeneration
 
         public override void VisitLeftShift(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.leftShift, b);
+            PutBinaryOperation(a, Operation.leftShift, b);
         }
-
         public override void VisitRightShift(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.rightShift, b);
+            PutBinaryOperation(a, Operation.rightShift, b);
         }
 
         public override void VisitLessOrEqualsComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.lessThanOrEqual, b);
+            PutBinaryOperation(a, Operation.lessThanOrEqual, b);
         }
-
         public override void VisitGreaterOrEqualsComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.greaterThanOrEqual, b);
+            PutBinaryOperation(a, Operation.greaterThanOrEqual, b);
         }
-
         public override void VisitEqualsComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.equal, b);
+            PutBinaryOperation(a, Operation.equals, b);
         }
-
         public override void VisitNotEqualsComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.notEqual, b);
+            PutBinaryOperation(a, Operation.notEquals, b);
         }
-
         public override void VisitLogicalAnd(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.logicalAnd, b);
+            PutBinaryOperation(a, Operation.logicalAnd, b);
         }
-
         public override void VisitLogicalOr(Node currentNode, Node a, Node b)
         {
-            PutBinaryOp(a, Operation.logicalOr, b);
+            PutBinaryOperation(a, Operation.logicalOr, b);
+        }
+        public override void VisitModulous(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOperation(a, Operation.mod, b);
+        }
+        public override void VisitBitwiseAnd(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOperation(a, Operation.and, b);
+        }
+        public override void VisitBitwiseXor(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOperation(a, Operation.xor, b);
+        }
+        public override void VisitBitwiseOr(Node currentNode, Node a, Node b)
+        {
+            PutBinaryOperation(a, Operation.or, b);
         }
     }
 }

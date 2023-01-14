@@ -1,4 +1,5 @@
-﻿using MindC.Compilation.Semantic.Functions;
+﻿using MindC.Compilation.AST;
+using MindC.Compilation.Semantic.Functions;
 using MindC.Compilation.Semantic.Primitives;
 using MindC.Compilation.Semantic.Variables;
 
@@ -7,6 +8,7 @@ namespace MindC.Compilation.Semantic
     public class SemanticModel
     {
         private readonly Dictionary<string, FunctionDeclaration> _functions;
+        private readonly Dictionary<string, Node> _functionASTs;
         public IEnumerable<FunctionDeclaration> DeclaredFunctions { get => _functions.Values; }
 
         private readonly Dictionary<string, Dictionary<string, VariableDeclaration>> _functionLocalVars;
@@ -20,7 +22,9 @@ namespace MindC.Compilation.Semantic
         {
             _dataTypes = new();
             _globalVariables = new();
+
             _functions = new();
+            _functionASTs = new();
 
             _typeConverter = new();
 
@@ -80,13 +84,21 @@ namespace MindC.Compilation.Semantic
         {
             return _functions[functionName];
         }
-        public void RegisterFunction(FunctionDeclaration function)
+        public void RegisterFunction(FunctionDeclaration function, Node code)
         {
             if (!_functionLocalVars.ContainsKey(function.Name))
             {
                 _functionLocalVars.Add(function.Name, new());
             }
+            if (!_functionASTs.ContainsKey(function.Name))
+            {
+                _functionASTs.Add(function.Name, code);
+            }
             _functions.Add(function.Name, function);
+        }
+        public Node GetFunctionCode(string functionName)
+        {
+            return _functionASTs[functionName];
         }
 
         public DataType GetImplicitConversionType(DataType left, DataType right)

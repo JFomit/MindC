@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\TypeSystem\TypeSystem.csproj" />
+    <ProjectReference Include="..\..\..\TypeSystem\TypeSystem.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="AST">
-      <HintPath>..\AST\bin\Debug\net6.0\AST.dll</HintPath>
+      <HintPath>..\..\..\Compilation\AST\bin\Debug\net6.0\AST.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -70,10 +70,10 @@ namespace MindC.Toolchain.Compiler
                 }
                 function = new FunctionDeclaration(name, SemanticModel.GetTypeInstance(type), @params.ToArray());
             }
-            SemanticModel.RegisterFunction(function);
-
             var code = VisitStatement_block(context.functionBody);
             var functionNode = Node.NewFunctionDeclaration(function, code);
+
+            SemanticModel.RegisterFunction(function, functionNode);
 
             return functionNode;
         }
@@ -98,6 +98,39 @@ namespace MindC.Toolchain.Compiler
 
             return Node.NewGlobalVariableDeclaration(variable);
         }
+        public override Node VisitMacro_declaration([NotNull] Macro_declarationContext context)
+        {
+            var name = context.macroName.GetText();
+            var type = context.returnType.GetText();
+
+            FunctionDeclaration function;
+            CurrentFunctionName = name;
+
+            if (context.macroParameteres is null)
+            {
+                function = new FunctionDeclaration(name, SemanticModel.GetTypeInstance(type), isMacro: true);
+            }
+            else
+            {
+                var @params = new List<FunctionParameter>();
+                for (int i = 0; i < context.macroParameteres.ChildCount; i++)
+                {
+                    var argTree = context.macroParameteres.GetChild(i);
+                    if (argTree is Single_parameterContext parameterContext)
+                    {
+                        @params.Add(VisitFunctionParameter(parameterContext));
+                    }
+                }
+                function = new FunctionDeclaration(name, SemanticModel.GetTypeInstance(type), @params.ToArray(), isMacro: true);
+            }
+
+            var code = VisitStatement_block(context.macroBody);
+            var functionNode = Node.NewFunctionDeclaration(function, code);
+
+            SemanticModel.RegisterFunction(function, functionNode);
+
+            return functionNode;
+        }
         #endregion
 
         #region mindc_statements
@@ -111,7 +144,9 @@ namespace MindC.Toolchain.Compiler
 
             for (int i = 0; i < context.ChildCount; i++)
             {
-                statements.Add(Visit(context.GetChild(i)));
+                var child = context.GetChild(i);
+                var statement = Visit(child);
+                statements.Add(statement);
             }
 
             return Node.NewStatementSequence(statements);
@@ -140,6 +175,11 @@ namespace MindC.Toolchain.Compiler
         {
             var functionCall = (Node.FunctionCall)VisitFunction_call_operator(context.function_call_operator());
             return Node.NewFunctionCallStatement(functionCall.name, functionCall.arguments);
+        }
+        public override Node VisitMacro_invokation_statement([NotNull] Macro_invokation_statementContext context)
+        {
+            var macroCall = (Node.FunctionCall)VisitMacro_invokation_operator(context.macro_invokation_operator());
+            return Node.NewFunctionCallStatement(macroCall.name, macroCall.arguments);
         }
         public override Node VisitIf_statement([NotNull] If_statementContext context)
         {
@@ -183,6 +223,10 @@ namespace MindC.Toolchain.Compiler
         {
             var name = context.functionName.GetText();
             var func = SemanticModel.GetFunctionDeclaration(name);
+            if (func.IsMacro)
+            {
+                throw new InvalidOperationException($"{func.ToString()} is not a function - its a macro, invoke it with an `!`.");
+            }
 
             var arguments = new List<Node>();
             if (context.arguments is not null)
@@ -204,6 +248,35 @@ namespace MindC.Toolchain.Compiler
             return VisitSingle_argument(context);
         }
 
+        public override Node VisitMacro_invokation([NotNull] Macro_invokationContext context)
+        {
+            return VisitMacro_invokation_operator(context.macro_invokation_operator());
+        }
+        public override Node VisitMacro_invokation_operator([NotNull] Macro_invokation_operatorContext context)
+        {
+            var name = context.macroName.GetText();
+            var macro = SemanticModel.GetFunctionDeclaration(name);
+            if (!macro.IsMacro)
+            {
+                throw new InvalidOperationException($"{macro.ToString()} is not a macro - its a function.");
+            }
+
+            var arguments = new List<Node>();
+            if (context.arguments is not null)
+            {
+                for (int i = 0; i < context.arguments.ChildCount; i++)
+                {
+                    var paramTree = context.arguments.GetChild(i);
+                    if (paramTree is Single_argumentContext arg)
+                    {
+                        arguments.Add(VisitFunctionArgument(arg));
+                    }
+                }
+            }
+            var funcCall = Node.NewFunctionCall(macro, arguments);
+            return funcCall;
+        }
+
         public override Node VisitAdditioning_operator([NotNull] Additioning_operatorContext context)
         {
             if (context.@operator.Text == "+")
@@ -217,14 +290,15 @@ namespace MindC.Toolchain.Compiler
         }
         public override Node VisitMultiplicationing_operator([NotNull] Multiplicationing_operatorContext context)
         {
-            if (context.@operator.Text == "*")
+            var op = context.@operator.Text;
+            var node = op switch
             {
-                return Node.NewMul(Visit(context.left), Visit(context.right));
-            }
-            else
-            {
-                return Node.NewDiv(Visit(context.left), Visit(context.right));
-            }
+                "*" => Node.NewMul(Visit(context.left), Visit(context.right)),
+                "/" => Node.NewDiv(Visit(context.left), Visit(context.right)),
+                "%" => Node.NewMod(Visit(context.left), Visit(context.right)),
+                _ => throw new InvalidOperationException("This should not be possible - all operators are handled by ANTLR!")
+            };
+            return node;
         }
         public override Node VisitNumber_literal([NotNull] Number_literalContext context)
         {
@@ -244,6 +318,18 @@ namespace MindC.Toolchain.Compiler
             return Visit(context.GetChild(1)); // by grammar
         }
 
+        public override Node VisitBitwise_and_operator([NotNull] Bitwise_and_operatorContext context)
+        {
+            return Node.NewBitwiseAnd(Visit(context.left), Visit(context.right));
+        }
+        public override Node VisitBitwise_xor_operator([NotNull] Bitwise_xor_operatorContext context)
+        {
+            return Node.NewBitwiseXor(Visit(context.left), Visit(context.right));
+        }
+        public override Node VisitBitwise_or_operator([NotNull] Bitwise_or_operatorContext context)
+        {
+            return Node.NewBitwiseOr(Visit(context.left), Visit(context.right));
+        }
         public override Node VisitComparison_operator([NotNull] Comparison_operatorContext context)
         {
             var op = context.@operator.Text;

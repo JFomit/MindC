@@ -39,7 +39,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Optimization", "Compilation
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Files", "Common\Files\Files.csproj", "{F1F6F483-F7E1-4F49-8D50-103DB1483A5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeValidation", "Compilation\TypeValidation\TypeValidation\TypeValidation.csproj", "{29B3989E-1845-4E91-8C4F-D4C6BE01848F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypeValidation", "Compilation\TypeValidation\TypeValidation\TypeValidation.csproj", "{29B3989E-1845-4E91-8C4F-D4C6BE01848F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Common\Utility\Utility\Utility.csproj", "{629355B3-A422-4E6F-8E11-9C9F06EAF0CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{29B3989E-1845-4E91-8C4F-D4C6BE01848F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29B3989E-1845-4E91-8C4F-D4C6BE01848F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29B3989E-1845-4E91-8C4F-D4C6BE01848F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629355B3-A422-4E6F-8E11-9C9F06EAF0CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629355B3-A422-4E6F-8E11-9C9F06EAF0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629355B3-A422-4E6F-8E11-9C9F06EAF0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629355B3-A422-4E6F-8E11-9C9F06EAF0CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{3C5E9C96-9B79-4A03-AB9A-940721EEFCF8} = {854D65BF-8527-48DB-AFA7-5DB354D32421}
 		{F1F6F483-F7E1-4F49-8D50-103DB1483A5D} = {A030643A-4190-4F68-99D9-800AD6D0B2ED}
 		{29B3989E-1845-4E91-8C4F-D4C6BE01848F} = {854D65BF-8527-48DB-AFA7-5DB354D32421}
+		{629355B3-A422-4E6F-8E11-9C9F06EAF0CE} = {A030643A-4190-4F68-99D9-800AD6D0B2ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F4B113C-6E75-42E1-B97A-4E20695CFE45}
