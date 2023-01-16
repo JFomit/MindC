@@ -45,6 +45,37 @@ namespace MindC.Toolchain.Compiler
         }
 
         #region declarations
+        public override Node VisitForward_faunction_declaration([NotNull] Forward_faunction_declarationContext context)
+        {
+            var name = context.functionName.GetText();
+            var type = context.returnType.GetText();
+
+            FunctionDeclaration function;
+            CurrentFunctionName = name;
+
+            if (context.functionParamTypes is null)
+            {
+                function = new FunctionDeclaration(name, SemanticModel.GetTypeInstance(type));
+            }
+            else
+            {
+                var @params = new List<FunctionParameter>();
+                for (int i = 0; i < context.functionParamTypes.ChildCount; i++)
+                {
+                    var argTree = context.functionParamTypes.GetChild(i);
+                    if (argTree is TypeContext parameterContext)
+                    {
+                        var paramType = SemanticModel.GetTypeInstance(parameterContext.GetText());
+                        @params.Add(new FunctionParameter(paramType, $"param{i}"));
+                    }
+                }
+                function = new FunctionDeclaration(name, SemanticModel.GetTypeInstance(type), @params.ToArray());
+            }
+            SemanticModel.ForwardRegisterFunction(function);
+
+            return Node.Empty;
+        }
+
         public override Node VisitFunction_declaration([NotNull] Function_declarationContext context)
         {
             var name = context.functionName.GetText();
@@ -70,6 +101,8 @@ namespace MindC.Toolchain.Compiler
                 }
                 function = new FunctionDeclaration(name, SemanticModel.GetTypeInstance(type), @params.ToArray());
             }
+            SemanticModel.ForwardRegisterFunction(function);
+
             var code = VisitStatement_block(context.functionBody);
             var functionNode = Node.NewFunctionDeclaration(function, code);
 

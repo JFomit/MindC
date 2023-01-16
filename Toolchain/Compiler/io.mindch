@@ -1,0 +1,20 @@
+﻿#ifndef __IO__
+#define __IO__
+
+void print(string s) {
+    mlog {
+        print $s ;
+    }
+}
+void println(string s) {
+    mlog {
+        print $s ;
+        print "\n" ;
+    }
+}
+void flush() {
+    mlog {
+        printflush message1 ;
+    }
+}
+#endif

@@ -1,6 +1,15 @@
-﻿#include "test.mindch"
+﻿//#include "math.mindch"
+#include "io.mindch"
+
+number fact(number x) {
+	if (x >= 1) {
+		return x * fact(x - 1);
+	}
+
+	return 1;
+}
 
 void main() {
-	number n;
-	n = sin(10);
+	print(fact(10));
+	flush();
 }

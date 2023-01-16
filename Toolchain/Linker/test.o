@@ -10,12 +10,75 @@
           "Label": null
         },
         "Signature": {
-          "Name": "print!",
+          "Name": "print",
           "ReturnType": "void",
           "Parameteres": [
             {
               "Type": {
                 "TypeName": "string"
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "println",
+          "ReturnType": "void",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": "string"
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "flush",
+          "ReturnType": "void",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "fact",
+          "ReturnType": "number",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": "number"
               }
             },
             {
@@ -55,9 +118,58 @@
         "Code": [
           "print:",
           "[store .return]",
-          "[store str]",
-          "print str",
+          "[store s]",
+          "print s",
+          "[return]"
+        ]
+      },
+      {
+        "Code": [
+          "println:",
+          "[store .return]",
+          "[store s]",
+          "print s",
+          "print \"\\n\"",
+          "[return]"
+        ]
+      },
+      {
+        "Code": [
+          "flush:",
+          "[store .return]",
           "printflush message1",
+          "[return]"
+        ]
+      },
+      {
+        "Code": [
+          "fact:",
+          "[store .return]",
+          "[store x]",
+          "set .c_temp0 x",
+          "set .c_temp1 1",
+          "op greaterThanEq .c_temp0 .c_temp0 .c_temp1",
+          "jump .test.mindcs0 notEqual .c_temp0 true",
+          "set .c_temp0 x",
+          "set .c_temp1 x",
+          "set .c_temp2 1",
+          "op sub .c_temp1 .c_temp1 .c_temp2",
+          "[load x]",
+          "[load .c_temp0]",
+          "[load .return]",
+          "[load .c_temp1]",
+          "[call number.fact(number)]",
+          "[store .c_temp1]",
+          "[store .return]",
+          "[store .c_temp0]",
+          "[store x]",
+          "op mul .c_temp0 .c_temp0 .c_temp1",
+          "[load .c_temp0]",
+          "[return]",
+          ".test.mindcs0:",
+          "set .c_temp0 1",
+          "[load .c_temp0]",
+          "[return]",
           "[return]"
         ]
       },
@@ -65,9 +177,13 @@
         "Code": [
           "[entrypoint]",
           "main:",
-          "set .c_temp1 Hello, world!",
-          "[load .c_temp1]",
-          "[call void.print!(string)]",
+          "set .c_temp0 10",
+          "[load .c_temp0]",
+          "[call number.fact(number)]",
+          "[store .c_temp0]",
+          "[load .c_temp0]",
+          "[call void.print(string)]",
+          "[call void.flush()]",
           "[reset]"
         ]
       }

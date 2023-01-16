@@ -98,6 +98,13 @@ global_variable_declaration
     : 'global' variableType=type variableName=identifier ';'
     ;
 // functions
+forward_faunction_declaration
+    : returnType=type functionName=identifier '(' functionParamTypes=parameter_types_list? ')' ';'
+    ;
+parameter_types_list
+    : type (',' type)*
+    ;
+
 function_declaration
     : retrunType=type functionName=identifier '(' functionParameteres=parameter_list? ')' functionBody=statement_block
     ;

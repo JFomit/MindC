@@ -1,0 +1,4 @@
+#ifndef __STD_IO__
+#define __STD_IO__
+
+#endif //__STD__IO__

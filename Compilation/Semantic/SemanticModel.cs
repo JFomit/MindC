@@ -8,6 +8,7 @@ namespace MindC.Compilation.Semantic
     public class SemanticModel
     {
         private readonly Dictionary<string, FunctionDeclaration> _functions;
+        private readonly Dictionary<string, FunctionDeclaration> _importedFunctions;
         private readonly Dictionary<string, Node> _functionASTs;
         public IEnumerable<FunctionDeclaration> DeclaredFunctions { get => _functions.Values; }
 
@@ -24,6 +25,7 @@ namespace MindC.Compilation.Semantic
             _globalVariables = new();
 
             _functions = new();
+            _importedFunctions = new();
             _functionASTs = new();
 
             _typeConverter = new();
@@ -82,7 +84,14 @@ namespace MindC.Compilation.Semantic
 
         public FunctionDeclaration GetFunctionDeclaration(string functionName)
         {
-            return _functions[functionName];
+            if (_functions.ContainsKey(functionName))
+            {
+                return _functions[functionName];
+            }
+            else
+            {
+                return _importedFunctions[functionName];
+            }
         }
         public void RegisterFunction(FunctionDeclaration function, Node code)
         {
@@ -99,6 +108,10 @@ namespace MindC.Compilation.Semantic
         public Node GetFunctionCode(string functionName)
         {
             return _functionASTs[functionName];
+        }
+        public void ForwardRegisterFunction(FunctionDeclaration function)
+        {
+            _importedFunctions.Add(function.Name, function);
         }
 
         public DataType GetImplicitConversionType(DataType left, DataType right)

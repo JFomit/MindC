@@ -32,7 +32,7 @@ namespace MindC.Toolchain.Linker
         {
             result.AppendLine("# Built with MindC toolchain");
             result.AppendLine("init:");
-            result.AppendLine("set .stack_pointer 0");
+            result.AppendLine("set .stack_pointer -1");
             result.AppendLine($"set .stack_addr {StackAddress}");
             result.AppendLine("jump main always");
         }

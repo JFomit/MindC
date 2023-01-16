@@ -7,6 +7,7 @@ using MindC.Compilation.Semantic;
 using MindC.Compilation.Semantic.Functions;
 using MindC.Compilation.Semantic.Primitives;
 using MindC.Compilation.Semantic.Variables;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection.Metadata;
 using static MindC.Compilation.CodeGeneration.SourceCodeWriter;
@@ -166,15 +167,19 @@ namespace MindC.Compilation.CodeGeneration
         }
         public override void VisitAssignStatement(Node currentNode, VariableDeclaration variable, Node expression)
         {
-            TempVariableNumber += 1;
-            Visit(expression);
+            TempVariableNumber = 0;
 
+            Visit(expression);
+            TempVariableNumber--; // last operation incremented for further operations, but we don't need that
+
+#if DEBUG
+            Debug.Assert(TempVariableNumber == 0);
+#endif
             CodeWriter.PutInstruction_Set(variable.Name, CurrentTempVariable);
-            TempVariableNumber -= 1;
         }
         public override void VisitFunctionCallStatement(Node currentNode, FunctionDeclaration function, List<Node> parameteres)
         {
-            TempVariableNumber += 1;
+            TempVariableNumber = 0;
             //if (function.IsMacro)
             //{
             //    var macroCode = Macros[function.Name];
@@ -185,8 +190,10 @@ namespace MindC.Compilation.CodeGeneration
             //{
             //}
             PutFunctionCallStatement(function, parameteres);
-            
-            TempVariableNumber -= 1;
+            TempVariableNumber--; // last operation incremented for further operations, but we don't need that
+#if DEBUG
+            Debug.Assert(TempVariableNumber == 0);
+#endif
         }
         private void PutMacroCallStatement(FunctionDeclaration macro, List<Node> parameteres, string[] code)
         {
@@ -214,26 +221,31 @@ namespace MindC.Compilation.CodeGeneration
         }
         private void PutFunctionCallStatement(FunctionDeclaration function, List<Node> parameteres)
         {
-            // saving arguments and local variables
-            // TODO: make use of function signatures in the semantic model
-            //foreach (var thisFuncArgument in CurrentFunction.Parameteres)
-            //{
-            //    CodeWriter.PutMacroCode_Load(thisFuncArgument.Name);
-            //}
-            if (CurrentFunction.ToString() != "void.main()")
-            {
-                foreach (var thisFuncLocalVar in SemanticModel.GetFunctionLocalVariables(CurrentFunction.Name))
-                {
-                    CodeWriter.PutMacroCode_Load(thisFuncLocalVar.Name);
-                }
-            }
             foreach (var param in parameteres)
             {
                 Visit(param);
+            }
+
+            // TODO: make use of function signatures in the semantic model
+            // saving arguments and local variables
+            foreach (var thisFuncLocalVar in SemanticModel.GetFunctionLocalVariables(CurrentFunction.Name))
+            {
+                CodeWriter.PutMacroCode_Load(thisFuncLocalVar.Name);
+            }
+            if (CurrentFunction.ToString() != "void.main()")
+            {
+                CodeWriter.PutMacroCode_Load(".return");
+            }
+
+            var tmpTop = --TempVariableNumber;
+            for (int i = parameteres.Count - 1; i >= 0; i--)
+            {
+                TempVariableNumber = tmpTop - i;
                 CodeWriter.PutMacroCode_Load(CurrentTempVariable);
             }
-            CodeWriter.PutMacroCode_Call(function.ToString());
 
+            CodeWriter.PutMacroCode_Call(function.ToString());
+            TempVariableNumber = tmpTop - parameteres.Count + 1;
             if (function.ReturnType != PrimitiveDataTypes.Void)
             {
                 CodeWriter.PutMacroCode_Pop();
@@ -242,26 +254,27 @@ namespace MindC.Compilation.CodeGeneration
             // loading arguments and local variables back
             if (CurrentFunction.ToString() != "void.main()")
             {
-                foreach (var thisFuncLocalVar in SemanticModel.GetFunctionLocalVariables(CurrentFunction.Name).Reverse())
-                {
-                    CodeWriter.PutMacroCode_Store(thisFuncLocalVar.Name);
-                }
+                CodeWriter.PutMacroCode_Store(".return");
             }
-            //foreach (var thisFuncArgument in CurrentFunction.Parameteres.Reverse())
-            //{
-            //    CodeWriter.PutMacroCode_Store(thisFuncArgument.Name);
-            //}
+            foreach (var thisFuncLocalVar in SemanticModel.GetFunctionLocalVariables(CurrentFunction.Name).Reverse())
+            {
+                CodeWriter.PutMacroCode_Store(thisFuncLocalVar.Name);
+            }
+            TempVariableNumber++;
         }
         public override void VisitIfStatement(Node currentNode, Node condition, Node body)
         {
-            TempVariableNumber += 1;
+            TempVariableNumber = 0;
             Visit(condition);
+            TempVariableNumber--; // last operation incremented for further operations, but we don't need that
+#if DEBUG
+            Debug.Assert(TempVariableNumber == 0);
+#endif
             var brunch = CurrentBrunchName;
             BrunchNumber++;
             CodeWriter.PutInstruction_Jump(brunch, ConditionType.notEqual, CurrentTempVariable, "true");
             Visit(body);
             CodeWriter.PutLabel(brunch);
-            TempVariableNumber -= 1;
         }
         public override void VisitWhileStatement(Node currentNode, Node condition, Node body)
         {
@@ -273,14 +286,17 @@ namespace MindC.Compilation.CodeGeneration
             BrunchNumber++;
 
             CodeWriter.PutLabel(conditionBranch);
-            TempVariableNumber += 1;
+            TempVariableNumber = 0;
             Visit(condition);
+            TempVariableNumber--; // last operation incremented for further operations, but we don't need that
+#if DEBUG
+            Debug.Assert(TempVariableNumber == 0);
+#endif
             CodeWriter.PutInstruction_Jump(exitBrunch, ConditionType.notEqual, CurrentTempVariable, "true");
             CodeWriter.PutLabel(codeBraunch);
             Visit(body);
             CodeWriter.PutInstruction_Jump(conditionBranch, ConditionType.always);
             CodeWriter.PutLabel(exitBrunch);
-            TempVariableNumber -= 1;
         }
         public override void VisitReturnStatement(Node currentNode)
         {
@@ -288,18 +304,22 @@ namespace MindC.Compilation.CodeGeneration
         }
         public override void VisitReturnValueStatement(Node currentNode, Node value)
         {
-            TempVariableNumber += 1;
+            TempVariableNumber = 0;
             var retTemp = CurrentTempVariable;
             Visit(value);
 
             CodeWriter.PutMacroCode_Load(retTemp);
             CodeWriter.PutMacroCode_Return();
-            TempVariableNumber -= 1;
+            TempVariableNumber--; // last operation incremented for further operations, but we don't need that
+#if DEBUG
+            Debug.Assert(TempVariableNumber == 0);
+#endif
         }
 
         public override void VisitLiteral(Node currentNode, LiteralValue literal)
         {
             var tmp = CurrentTempVariable;
+            TempVariableNumber++;
             var val = string.Format(CultureInfo.InvariantCulture, "{0}", literal.Value);
 
             CodeWriter.PutInstruction_Set(tmp, val);
@@ -307,49 +327,66 @@ namespace MindC.Compilation.CodeGeneration
         public override void VisitVariableReference(Node currentNode, VariableDeclaration variable)
         {
             var tmp = CurrentTempVariable;
+            TempVariableNumber++;
 
             CodeWriter.PutInstruction_Set(tmp, variable.Name);
         }
         public override void VisitFunctionCall(Node currentNode, FunctionDeclaration function, List<Node> parameteres)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-
-            //if (function.IsMacro)
-            //{
-            //    var code = Macros[function.Name];
-            //    PutMacroCall(tmpRes, function, parameteres, code);
-            //}
-            //else
-            //{
-            //}
-            PutFunctionCall(tmpRes, function, parameteres);
-            
+            PutFunctionCall(function, parameteres);
         }
-        private void PutFunctionCall(string tmpRes, FunctionDeclaration function, List<Node> parameteres)
+        private void PutFunctionCall(FunctionDeclaration function, List<Node> parameteres)
         {
+            foreach (var param in parameteres)
+            {
+                Visit(param);
+            }
+
             // TODO: make use of function signatures in the semantic model
             // saving arguments and local variables
             foreach (var thisFuncLocalVar in SemanticModel.GetFunctionLocalVariables(CurrentFunction.Name))
             {
                 CodeWriter.PutMacroCode_Load(thisFuncLocalVar.Name);
             }
-            CodeWriter.PutMacroCode_Load(".return");
-
-            foreach (var param in parameteres)
+            var tmpTop = --TempVariableNumber;
+            var destinationTempVariable = tmpTop - parameteres.Count + 1;
+            for (int i = 0; i < destinationTempVariable; i++) // saving temp variables
             {
-                Visit(param);
+                TempVariableNumber = i;
                 CodeWriter.PutMacroCode_Load(CurrentTempVariable);
             }
+
+            if (CurrentFunction.ToString() != "void.main()")
+            {
+                CodeWriter.PutMacroCode_Load(".return");
+            }
+
+            for (int i = parameteres.Count - 1; i >= 0; i--)
+            {
+                TempVariableNumber = tmpTop - i;
+                CodeWriter.PutMacroCode_Load(CurrentTempVariable);
+            }
+
             CodeWriter.PutMacroCode_Call(function.ToString());
-            CodeWriter.PutMacroCode_Store(tmpRes);
-            TempVariableNumber--;
+            TempVariableNumber = destinationTempVariable;
+            CodeWriter.PutMacroCode_Store(CurrentTempVariable);
+
             // loading arguments and local variables back
-            CodeWriter.PutMacroCode_Store(".return");
+            if (CurrentFunction.ToString() != "void.main()")
+            {
+                CodeWriter.PutMacroCode_Store(".return");
+            }
+            for (int i = destinationTempVariable - 1; i >= 0; i--)
+            {
+                TempVariableNumber = i;
+                CodeWriter.PutMacroCode_Store(CurrentTempVariable);
+            }
+            TempVariableNumber = destinationTempVariable;
             foreach (var thisFuncLocalVar in SemanticModel.GetFunctionLocalVariables(CurrentFunction.Name).Reverse())
             {
                 CodeWriter.PutMacroCode_Store(thisFuncLocalVar.Name);
             }
+            TempVariableNumber++;
         }
         private void PutMacroCall(string tmpRes, FunctionDeclaration macro, List<Node> parameteres, string[] code)
         {
@@ -394,17 +431,16 @@ namespace MindC.Compilation.CodeGeneration
         }
         private void PutBinaryOperation(Node a, Operation operation, Node b)
         {
-            var tmpRes = CurrentTempVariable;
-            TempVariableNumber++;
-            var tmpA = CurrentTempVariable;
             Visit(a);
-            TempVariableNumber++;
-            var tmpB = CurrentTempVariable;
             Visit(b);
 
-            CodeWriter.PutInstruction_Op(operation, tmpRes, tmpA, tmpB);
+            TempVariableNumber--;
+            var tmpB = CurrentTempVariable;
+            TempVariableNumber--;
+            var tmpA = CurrentTempVariable;
 
-            TempVariableNumber -= 2;
+            CodeWriter.PutInstruction_Op(operation, tmpA, tmpA, tmpB);
+            TempVariableNumber++;
         }
         public override void VisitMultiplication(Node currentNode, Node a, Node b)
         {
@@ -450,11 +486,11 @@ namespace MindC.Compilation.CodeGeneration
 
         public override void VisitLessOrEqualsComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOperation(a, Operation.lessThanOrEqual, b);
+            PutBinaryOperation(a, Operation.lessThanEq, b);
         }
         public override void VisitGreaterOrEqualsComparison(Node currentNode, Node a, Node b)
         {
-            PutBinaryOperation(a, Operation.greaterThanOrEqual, b);
+            PutBinaryOperation(a, Operation.greaterThanEq, b);
         }
         public override void VisitEqualsComparison(Node currentNode, Node a, Node b)
         {

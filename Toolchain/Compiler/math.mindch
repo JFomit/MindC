@@ -1,0 +1,45 @@
+﻿#ifndef __MATH__
+#define __MATH__
+
+number min(number a, number b) {
+    number result;
+    mlog {
+        op min $result $a $b ;
+    }
+
+    return result
+}
+number max(number a, number b) {
+    number result;
+    mlog {
+        op max $result $a $b ;
+    }
+
+    return result
+}
+
+number sin(number x) {
+    number result;
+    mlog {
+        op sin $result $x ;
+    }
+
+    return result
+}
+number cos(number x) {
+    number result;
+    mlog {
+        op cos $result $x ;
+    }
+
+    return result
+}
+number tan(number x) {
+    number result;
+    mlog {
+        op tan $result $x ;
+    }
+
+    return result
+}
+#endif

@@ -1,0 +1,143 @@
+#ifndef __STD_MATH__
+#define __STD_MATH__
+
+number max(number a, number b) {
+	number result;
+	mlog {
+		op max $result $a $b;
+	}
+	return result;
+}
+number min(number a, number b) {
+	number result;
+	mlog{
+		op min $result $a $b;
+	}
+	return result;
+}
+
+number angle(number x, number y) {
+	number result;
+	mlog{
+		op angle $result $x $y;
+	}
+	return result;
+}
+number len(number x, number y) {
+	number result;
+	mlog{
+		op len $result $x $y;
+	}
+	return result;
+}
+
+number noise(number x, number y) {
+	number result;
+	mlog{
+		op noise $result $x $y;
+	}
+	return result;
+}
+
+number abs(number x) {
+	number result;
+	mlog{
+		op abs $result $x;
+	}
+	return result;
+}
+
+number log(number x) {
+	number result;
+	mlog{
+		op log $result $x $y;
+	}
+	return result;
+}
+number log10(number x) {
+	number result;
+	mlog{
+		op log10 $result $x $y;
+	}
+	return result;
+}
+
+number floor(number x) {
+	number result;
+	mlog{
+		op floor $result $x $y;
+	}
+	return result;
+}
+number ceil(number x) {
+	number result;
+	mlog{
+		op ceil $result $x $y;
+	}
+	return result;
+}
+
+number sqrt(number x) {
+	number result;
+	mlog{
+		op sqrt $result $x $y;
+	}
+	return result;
+}
+number sqr(number x) {
+	return x * x;
+}
+
+number rand(number x) {
+	number result;
+	mlog{
+		op rand $result $x $y;
+	}
+	return result;
+}
+
+number sin(number x) {
+	number result;
+	mlog{
+		op sin $result $x $y;
+	}
+	return result;
+}
+number cos(number x) {
+	number result;
+	mlog{
+		op cos $result $x $y;
+	}
+	return result;
+}
+number tan(number x) {
+	number result;
+	mlog{
+		op tan $result $x $y;
+	}
+	return result;
+}
+
+number asin(number x) {
+	number result;
+	mlog{
+		op asin $result $x $y;
+	}
+	return result;
+}
+number acos(number x) {
+	number result;
+	mlog{
+		op acos $result $x $y;
+	}
+	return result;
+}
+number atan(number x) {
+	number result;
+	mlog{
+		op atan $result $x $y;
+	}
+	return result;
+}
+
+#endif // __STD_MATH__

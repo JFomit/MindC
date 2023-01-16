@@ -166,8 +166,8 @@ namespace MindC.Compilation.CodeGeneration
 
         lessThan,
         greaterThan,
-        lessThanOrEqual,
-        greaterThanOrEqual,
+        lessThanEq,
+        greaterThanEq,
         equals,
         notEquals,
 
