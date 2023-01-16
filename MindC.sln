@@ -45,6 +45,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Common\Utility\U
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MindCSTD", "MindCSTD\MindCSTD.vcxproj", "{5EAF0FA3-D3B7-436D-AA3D-7D890876C106}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{9B30DF20-ACFB-45D1-9B8C-578EA8D8860A}"
+	ProjectSection(SolutionItems) = preProject
+		NOTICE.txt = NOTICE.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
