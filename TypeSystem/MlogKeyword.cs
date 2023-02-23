@@ -7,9 +7,15 @@ namespace MindC.Compilation.Semantic
     {
         invalid = 0,
 
-        set = 1,
-        op = 2,
-        print = 3,
-        printflush = 4,
+        set,
+        op,
+        print,
+        printflush,
+        ubind,
+        ucontrol,
+        jump,
+        lookup,
+        sensor,
+        control
     }
 }

@@ -6,7 +6,9 @@
         public static DataType Number => _number;
         public static DataType Boolean => _boolean;
         public static DataType String => _string;
+        public static DataType Any => _any;
 
+        private static readonly DataType _any = new TypeAny();
         private static readonly DataType _void = new TypeVoid();
         private static readonly DataType _number = new TypeNumber();
         private static readonly DataType _boolean = new TypeBoolean();
@@ -14,6 +16,7 @@
 
         public static void SetupBuitInTypes(Dictionary<string, DataType> types)
         {
+            types.Add(Any.GetStringRepresentation(), Any);
             types.Add(Void.GetStringRepresentation(), Void);
             types.Add(Number.GetStringRepresentation(), Number);
             types.Add(Boolean.GetStringRepresentation(), Boolean);

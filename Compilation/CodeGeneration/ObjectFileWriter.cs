@@ -51,9 +51,9 @@ namespace MindC.Compilation.CodeGeneration
             ObjectResultBuilder = ObjectCodeBuilder!.BuildCodeSection();
         }
 
-        internal string GetCode()
+        internal string GetCode(string?  beforeInit)
         {
-            var file = ObjectResultBuilder!.Build();
+            var file = ObjectResultBuilder!.Build().Set_BEFORE_INIT(beforeInit);
 
             var code = JsonConvert.SerializeObject(file, Formatting.Indented);
 

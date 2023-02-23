@@ -34,6 +34,12 @@ namespace MindC.Toolchain.Linker
             result.AppendLine("init:");
             result.AppendLine("set .stack_pointer -1");
             result.AppendLine($"set .stack_addr {StackAddress}");
+
+            foreach (var obj in _objectFiles)
+            {
+                result.Append(obj.ObjectFile.BEFORE_INIT ?? "");
+            }
+
             result.AppendLine("jump main always");
         }
         private static void PutObjectFileCode(ObjectFileHandler obj, StringBuilder result)

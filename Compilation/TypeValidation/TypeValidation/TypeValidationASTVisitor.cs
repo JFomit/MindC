@@ -88,7 +88,8 @@ namespace MindC.Compilation.Semantic.TypeValidation
 
         public override DataType VisitEmpty(Node currentNode)
         {
-            throw new NotSupportedException("Empty nodes shouldn't be in the tree.");
+            //throw new NotSupportedException("Empty nodes shouldn't be in the tree.");
+            return PrimitiveDataTypes.Void; //TODO: fix this piece of code, return a warning/error, +fix forwrad declarations
         }
 
         public override DataType VisitFunctionCall(Node currentNode, FunctionDeclaration function, List<Node> arguments)

@@ -7,13 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\AST\AST.fsproj" />
     <ProjectReference Include="..\..\Semantic\Semantic.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="AST">
-      <HintPath>..\..\AST\bin\Debug\net6.0\AST.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

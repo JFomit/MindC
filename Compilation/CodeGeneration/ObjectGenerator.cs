@@ -10,6 +10,7 @@ using MindC.Compilation.Semantic.Variables;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection.Metadata;
+using System.Text;
 using static MindC.Compilation.CodeGeneration.SourceCodeWriter;
 
 namespace MindC.Compilation.CodeGeneration
@@ -26,6 +27,7 @@ namespace MindC.Compilation.CodeGeneration
         private ObjectFileWriter FileWriter { get; init; }
 
         private Dictionary<string, string[]> Macros { get; init; }
+        private StringBuilder _globalVars;
 
         private int TempVariableNumber = 0;
         private int BrunchNumber = 0;
@@ -38,6 +40,8 @@ namespace MindC.Compilation.CodeGeneration
 
         public ObjectGenerator(Node root, SemanticModel semanticModel, List<IOptimizer> enabledOptimizers, string? name = null) : base(root)
         {
+            _globalVars = new();
+
             SemanticModel = semanticModel;
             EnabledOptimizers = enabledOptimizers;
 
@@ -77,7 +81,7 @@ namespace MindC.Compilation.CodeGeneration
 
             StageStatus = StageStatus.Finished;
 
-            return FileWriter.GetCode();
+            return FileWriter.GetCode(_globalVars.ToString());
         }
         private void RunOptimizers()
         {
@@ -101,7 +105,8 @@ namespace MindC.Compilation.CodeGeneration
         }
         public override void VisitEmpty(Node node)
         {
-            throw new InvalidOperationException("Empty nodes should never appear in the tree.");
+            //throw new InvalidOperationException("Empty nodes should never appear in the tree.");
+            //TODO: also fix forward declarations here
         }
 
         public override void VisitFunctionDeclaration(Node currentNode, FunctionDeclaration function, Node body)
@@ -151,7 +156,8 @@ namespace MindC.Compilation.CodeGeneration
         }
         public override void VisitGlobalVariableDeclaration(Node currentNode, VariableDeclaration variable)
         {
-            CodeWriter.PutInstruction_Set(variable.Name, variable.DataType.GetDefaultValue());
+            //FileWriter.PutGlobalVariable(variable.Name, variable.DataType.GetDefaultValue());
+            _globalVars.AppendLine($"set {variable.Name} {variable.DataType.GetDefaultValue()}");
         }
 
         public override void VisitStatementSequnce(Node currentNode, List<Node> statements)

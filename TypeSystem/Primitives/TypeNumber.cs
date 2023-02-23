@@ -30,10 +30,12 @@
 
                 (Operation.ImplicitCast, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.ImplicitCast, TypeString) => PrimitiveDataTypes.String,
+                (Operation.ImplicitCast, TypeAny) => PrimitiveDataTypes.Any,
 
                 (Operation.ExplicitCast, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.ExplicitCast, TypeString) => PrimitiveDataTypes.String,
                 (Operation.ExplicitCast, TypeBoolean) => PrimitiveDataTypes.Boolean,
+                (Operation.ExplicitCast, TypeAny) => PrimitiveDataTypes.Any,
 
                 _ => null
             };

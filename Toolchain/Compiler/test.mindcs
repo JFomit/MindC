@@ -1,15 +1,12 @@
-﻿//#include "math.mindch"
-#include "io.mindch"
-
-number fact(number x) {
-	if (x >= 1) {
-		return x * fact(x - 1);
-	}
-
-	return 1;
-}
+﻿#include "units.mindch"
+#include "math.mindch"
 
 void main() {
-	print(fact(10));
-	flush();
+    number iterations;
+    bind_unit();
+
+    while (true) {
+        move_unit(50 * cos(iterations) + 150, 50 * sin(iterations) + 150);
+        iterations = iterations + 1;
+    }
 }

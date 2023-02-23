@@ -50,13 +50,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="io.mindch">
+    <None Update="math.mindch">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="units.mindch">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="MindC.g4">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="math.mindch">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="test.mindcs">

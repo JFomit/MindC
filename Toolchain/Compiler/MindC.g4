@@ -65,6 +65,7 @@ item
     | global_variable_declaration
     | struct_declaration
     | preprocessor_directive
+    | forward_faunction_declaration
     ;
 // preprocessor directives
 preprocessor_directive
@@ -208,7 +209,8 @@ type
     | user_defined_type
     ;
 built_in_type
-    : 'bool'
+    : 'any'
+    | 'bool'
     | 'number'
     | 'void'
     | 'string'
@@ -312,6 +314,7 @@ mlog_keyword
     | 'ucontrol'
     | 'ubind'
     | 'ulocate'
+    | 'ucontrol'
     | 'lookup'
     | 'getlink'
     | 'print'

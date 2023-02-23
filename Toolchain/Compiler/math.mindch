@@ -1,45 +1,21 @@
-﻿#ifndef __MATH__
-#define __MATH__
-
-number min(number a, number b) {
-    number result;
-    mlog {
-        op min $result $a $b ;
-    }
-
-    return result
-}
-number max(number a, number b) {
-    number result;
-    mlog {
-        op max $result $a $b ;
-    }
-
-    return result
-}
+﻿#ifndef __STD__MATH__
+#define __STD__MATH__
 
 number sin(number x) {
-    number result;
-    mlog {
-        op sin $result $x ;
-    }
+	number result;
+	mlog {
+		op sin $result $x ;
+	}
 
-    return result
+	return result;
 }
 number cos(number x) {
-    number result;
-    mlog {
-        op cos $result $x ;
-    }
+	number result;
+	mlog {
+		op cos $result $x ;
+	}
 
-    return result
+	return result;
 }
-number tan(number x) {
-    number result;
-    mlog {
-        op tan $result $x ;
-    }
 
-    return result
-}
-#endif
+#endif // __STD__MATH__

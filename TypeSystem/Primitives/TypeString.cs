@@ -14,8 +14,9 @@
                 (Operation.Add, TypeString) => PrimitiveDataTypes.String,
 
                 (Operation.ImplicitCast, TypeString) => PrimitiveDataTypes.String,
+                (Operation.ImplicitCast, TypeAny) => PrimitiveDataTypes.Any,
 
-                (Operation.ExplicitCast, _) => right,
+                (Operation.ExplicitCast, _) => right, // any is included
 
                 _ => null
             };

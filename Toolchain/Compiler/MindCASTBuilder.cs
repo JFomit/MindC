@@ -7,6 +7,7 @@ using MindC.Compilation.Semantic.Primitives;
 using MindC.Compilation.Semantic.Variables;
 using MindC.Compiler;
 using System.Globalization;
+using System.Xml.Schema;
 using static MindC.Compiler.MindCParser;
 
 namespace MindC.Toolchain.Compiler
@@ -340,7 +341,7 @@ namespace MindC.Toolchain.Compiler
         }
         public override Node VisitBoolean_literal([NotNull] Boolean_literalContext context)
         {
-            return Node.NewLiteral(new LiteralValue(PrimitiveDataTypes.Boolean, bool.Parse(context.GetText())));
+            return Node.NewLiteral(new LiteralValue(PrimitiveDataTypes.Boolean, context.GetText())); // TODO: add checking!
         }
         public override Node VisitString_literal([NotNull] String_literalContext context)
         {
@@ -453,6 +454,10 @@ namespace MindC.Toolchain.Compiler
                 else if (child.GetText() == ";")
                 {
                     continue;
+                }
+                else if (child.GetText() == "@")
+                {
+                    parts.Add($"@{context.GetChild(++i).GetText()}");
                 }
                 else
                 {

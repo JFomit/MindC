@@ -10,49 +10,7 @@
           "Label": null
         },
         "Signature": {
-          "Name": "print",
-          "ReturnType": "void",
-          "Parameteres": [
-            {
-              "Type": {
-                "TypeName": "string"
-              }
-            },
-            {
-              "Type": {
-                "TypeName": ""
-              }
-            }
-          ]
-        }
-      },
-      {
-        "Code": {
-          "Label": null
-        },
-        "Signature": {
-          "Name": "println",
-          "ReturnType": "void",
-          "Parameteres": [
-            {
-              "Type": {
-                "TypeName": "string"
-              }
-            },
-            {
-              "Type": {
-                "TypeName": ""
-              }
-            }
-          ]
-        }
-      },
-      {
-        "Code": {
-          "Label": null
-        },
-        "Signature": {
-          "Name": "flush",
+          "Name": "bind_unit",
           "ReturnType": "void",
           "Parameteres": [
             {
@@ -73,7 +31,49 @@
           "Label": null
         },
         "Signature": {
-          "Name": "fact",
+          "Name": "move_unit",
+          "ReturnType": "void",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": "number,number"
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "sin",
+          "ReturnType": "number",
+          "Parameteres": [
+            {
+              "Type": {
+                "TypeName": "number"
+              }
+            },
+            {
+              "Type": {
+                "TypeName": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Code": {
+          "Label": null
+        },
+        "Signature": {
+          "Name": "cos",
           "ReturnType": "number",
           "Parameteres": [
             {
@@ -116,58 +116,43 @@
     "FunctionsCode": [
       {
         "Code": [
-          "print:",
+          "bind_unit:",
           "[store .return]",
-          "[store s]",
-          "print s",
+          "ubind @flare",
           "[return]"
         ]
       },
       {
         "Code": [
-          "println:",
+          "move_unit:",
           "[store .return]",
-          "[store s]",
-          "print s",
-          "print \"\\n\"",
+          "[store y]",
+          "[store x]",
+          "ucontrol move x y",
           "[return]"
         ]
       },
       {
         "Code": [
-          "flush:",
-          "[store .return]",
-          "printflush message1",
-          "[return]"
-        ]
-      },
-      {
-        "Code": [
-          "fact:",
+          "sin:",
           "[store .return]",
           "[store x]",
-          "set .c_temp0 x",
-          "set .c_temp1 1",
-          "op greaterThanEq .c_temp0 .c_temp0 .c_temp1",
-          "jump .test.mindcs0 notEqual .c_temp0 true",
-          "set .c_temp0 x",
-          "set .c_temp1 x",
-          "set .c_temp2 1",
-          "op sub .c_temp1 .c_temp1 .c_temp2",
-          "[load x]",
-          "[load .c_temp0]",
-          "[load .return]",
-          "[load .c_temp1]",
-          "[call number.fact(number)]",
-          "[store .c_temp1]",
-          "[store .return]",
-          "[store .c_temp0]",
-          "[store x]",
-          "op mul .c_temp0 .c_temp0 .c_temp1",
+          "set result 0",
+          "op sin result x",
+          "set .c_temp0 result",
           "[load .c_temp0]",
           "[return]",
-          ".test.mindcs0:",
-          "set .c_temp0 1",
+          "[return]"
+        ]
+      },
+      {
+        "Code": [
+          "cos:",
+          "[store .return]",
+          "[store x]",
+          "set result 0",
+          "op cos result x",
+          "set .c_temp0 result",
           "[load .c_temp0]",
           "[return]",
           "[return]"
@@ -177,16 +162,55 @@
         "Code": [
           "[entrypoint]",
           "main:",
-          "set .c_temp0 10",
+          "set iterations 0",
+          "[load iterations]",
+          "[call void.bind_unit()]",
+          "[store iterations]",
+          ".test.mindcs0:",
+          "set .c_temp0 true",
+          "jump .test.mindcs2 notEqual .c_temp0 true",
+          ".test.mindcs1:",
+          "set .c_temp0 50",
+          "set .c_temp1 iterations",
+          "[load iterations]",
           "[load .c_temp0]",
-          "[call number.fact(number)]",
+          "[load .c_temp1]",
+          "[call number.cos(number)]",
+          "[store .c_temp1]",
           "[store .c_temp0]",
+          "[store iterations]",
+          "op mul .c_temp0 .c_temp0 .c_temp1",
+          "set .c_temp1 150",
+          "op add .c_temp0 .c_temp0 .c_temp1",
+          "set .c_temp1 50",
+          "set .c_temp2 iterations",
+          "[load iterations]",
           "[load .c_temp0]",
-          "[call void.print(string)]",
-          "[call void.flush()]",
+          "[load .c_temp1]",
+          "[load .c_temp2]",
+          "[call number.sin(number)]",
+          "[store .c_temp2]",
+          "[store .c_temp1]",
+          "[store .c_temp0]",
+          "[store iterations]",
+          "op mul .c_temp1 .c_temp1 .c_temp2",
+          "set .c_temp2 150",
+          "op add .c_temp1 .c_temp1 .c_temp2",
+          "[load iterations]",
+          "[load .c_temp0]",
+          "[load .c_temp1]",
+          "[call void.move_unit(number,number)]",
+          "[store iterations]",
+          "set .c_temp0 iterations",
+          "set .c_temp1 1",
+          "op add .c_temp0 .c_temp0 .c_temp1",
+          "set iterations .c_temp0",
+          "jump .test.mindcs0 always",
+          ".test.mindcs2:",
           "[reset]"
         ]
       }
     ]
-  }
+  },
+  "BEFORE_INIT": ""
 }

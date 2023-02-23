@@ -1,0 +1,15 @@
+﻿#ifndef __STD_UNITS__
+#define __STD_UNITS__
+
+void bind_unit() {
+    mlog {
+        ubind @flare ;
+    }
+}
+void move_unit(number x, number y) {
+    mlog {
+        ucontrol move $x $y ;
+    }
+}
+
+#endif // __STD_UNITS__

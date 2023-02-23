@@ -111,7 +111,7 @@ namespace MindC.Compilation.Semantic
         }
         public void ForwardRegisterFunction(FunctionDeclaration function)
         {
-            _importedFunctions.Add(function.Name, function);
+            _ = _importedFunctions.TryAdd(function.Name, function); // TODO: validatation, warnings, etc
         }
 
         public DataType GetImplicitConversionType(DataType left, DataType right)
