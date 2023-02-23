@@ -161,8 +161,8 @@ namespace MindC.Compilation.CodeGeneration
         div,
         mod,
 
-        leftShift,
-        rightShift,
+        shl,
+        shr,
 
         lessThan,
         greaterThan,

@@ -59,7 +59,7 @@
     <None Update="MindC.g4">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="test.mindcs">
+    <None Update="t.mindcs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

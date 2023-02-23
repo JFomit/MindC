@@ -24,6 +24,9 @@
                 (Operation.Equals, TypeNumber) => PrimitiveDataTypes.Boolean,
                 (Operation.NotEquals, TypeNumber) => PrimitiveDataTypes.Boolean,
 
+                (Operation.LeftShift, TypeNumber) => PrimitiveDataTypes.Number,
+                (Operation.RightShift, TypeNumber) => PrimitiveDataTypes.Number,
+
                 (Operation.And, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.Xor, TypeNumber) => PrimitiveDataTypes.Number,
                 (Operation.Or, TypeNumber) => PrimitiveDataTypes.Number,

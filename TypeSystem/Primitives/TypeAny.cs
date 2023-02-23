@@ -30,7 +30,7 @@ namespace MindC.Compilation.Semantic.Primitives
 
                 (_, TypeVoid) => null, // can't do ops on void
 
-                _ => PrimitiveDataTypes.Any // everything else is allowed, resut - void
+                _ => PrimitiveDataTypes.Any // everything else is allowed, resut - any
             };
 
             return result is not null;

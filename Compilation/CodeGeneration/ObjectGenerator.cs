@@ -483,11 +483,11 @@ namespace MindC.Compilation.CodeGeneration
 
         public override void VisitLeftShift(Node currentNode, Node a, Node b)
         {
-            PutBinaryOperation(a, Operation.leftShift, b);
+            PutBinaryOperation(a, Operation.shl, b);
         }
         public override void VisitRightShift(Node currentNode, Node a, Node b)
         {
-            PutBinaryOperation(a, Operation.rightShift, b);
+            PutBinaryOperation(a, Operation.shr, b);
         }
 
         public override void VisitLessOrEqualsComparison(Node currentNode, Node a, Node b)
